@@ -1,0 +1,14 @@
+bin/
+obj/
+.idea/
+.cr/
+.vscode/
+*.user
+*.suo
+*.cache
+*.db
+*.pidb
+*.pdb
+*.log
+*.tmp
+*.swp
