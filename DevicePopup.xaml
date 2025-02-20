@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="mauiapp1.DevicePopup"
+             Title="Select Device">
+    <VerticalStackLayout Margin="16">
+        <Label Text="Select a device:" FontSize="Medium"/>
+        <CollectionView x:Name="DeviceCollectionView" SelectionMode="Single" SelectionChanged="DeviceCollectionView_SelectionChanged">
+            <CollectionView.ItemTemplate>
+                <DataTemplate>
+                    <Frame Margin="5" Padding="10" BorderColor="Gray" CornerRadius="5">
+                        <Label Text="{Binding}" />
+                    </Frame>
+                </DataTemplate>
+            </CollectionView.ItemTemplate>
+        </CollectionView>
+        <Button Text="Cancel" Clicked="CancelButton_Clicked" Margin="0, 10, 0, 0"/>
+    </VerticalStackLayout>
+</ContentPage>

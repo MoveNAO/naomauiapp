@@ -169,9 +169,13 @@
 		<PackageReference Include="Microsoft.Maui.Controls" Version="$(MauiVersion)" />
 		<PackageReference Include="Microsoft.Maui.Controls.Compatibility" Version="$(MauiVersion)" />
 		<PackageReference Include="Microsoft.Extensions.Logging.Debug" Version="8.0.1" />
+		<PackageReference Include="Rssdp" Version="4.0.4" />
 	</ItemGroup>
 
 	<ItemGroup>
+	  <MauiXaml Update="DevicePopup.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
 	  <MauiXaml Update="Preferences.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>

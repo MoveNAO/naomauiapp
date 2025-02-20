@@ -3,16 +3,28 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="mauiapp1.Preferences"
              Title="Preferences">
-    <VerticalStackLayout
-        Margin="16, 16, 16, 16">
-        <Label
-            Text="Insert your IP"/>
-        <Entry
-            x:Name = "entry"
-            Placeholder="IP Address"
-            TextChanged="Entry_TextChanged"/>
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+
+        <VerticalStackLayout Grid.Row="0" Margin="16">
+            <Label Text="Insert your IP"/>
+            <Entry
+                x:Name="entry"
+                Placeholder="IP Address"
+                TextChanged="Entry_TextChanged"/>
+            <Button
+                Text="Set."
+                Clicked="Button_Clicked"/>
+        </VerticalStackLayout>
+
         <Button
-            Text="Set."
-            Clicked="Button_Clicked"/>
-    </VerticalStackLayout>
+            Grid.Row="2" 
+            Text="Find IPs."
+            Clicked="Button_Clicked_1" 
+            Margin="16"/>
+    </Grid>
 </ContentPage>
