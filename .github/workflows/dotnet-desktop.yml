@@ -39,7 +39,7 @@ jobs:
 
     # Publish Windows EXE
     - name: Publish Windows EXE
-      run: dotnet publish $env:Solution_Name -f net8.0-windows10.0.19041.0 -c ${{ matrix.configuration }} -p:PublishSingleFile=true -p:SelfContained=true -o publish-output
+      run: dotnet publish $env:Solution_Name -r win10-x64 -f net8.0-windows10.0.19041.0 -c ${{ matrix.configuration }} -p:PublishSingleFile=true -p:SelfContained=true -o publish-output
 
     # Build Android APK
     - name: Build Android APK
