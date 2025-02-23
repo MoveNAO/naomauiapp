@@ -7,7 +7,7 @@ namespace mauiapp1;
 
 public partial class Preferences : ContentPage
 {
-    string ipaddr;
+    string? ipaddr;
     public Preferences()
 	{
 		InitializeComponent();
@@ -81,10 +81,13 @@ public partial class Preferences : ContentPage
             try
             {
                 socket.Connect("8.8.8.8", 65530);
-                IPEndPoint endPoint = socket.LocalEndPoint as IPEndPoint;
-                localIP = endPoint.Address.ToString();
-                return localIP;
-
+                IPEndPoint? endPoint = socket.LocalEndPoint as IPEndPoint;
+                if(endPoint != null)
+                {
+                    localIP = endPoint.Address.ToString();
+                    return localIP;
+                }
+                return null;
             }
             catch
             {
@@ -93,7 +96,7 @@ public partial class Preferences : ContentPage
         }
     }
 
-    private static string GetSubnetMask(string ipAddress)
+    private static string? GetSubnetMask(string ipAddress)
     {
         foreach (NetworkInterface ni in NetworkInterface.GetAllNetworkInterfaces())
         {
@@ -130,10 +133,10 @@ public partial class Preferences : ContentPage
     private async void Button_Clicked_1(object sender, EventArgs e)
     {
         PortScanner portScanner = new PortScanner();
-        string yourIP = GetCurrentIP();
+        string? yourIP = GetCurrentIP();
         if (yourIP != null)
         {
-            string subnetMask = GetSubnetMask(yourIP);
+            string? subnetMask = GetSubnetMask(yourIP);
             if (subnetMask != null)
             {
                 string yourSubnet = GetCurrentSubnet(yourIP, subnetMask);

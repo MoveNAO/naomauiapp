@@ -11,7 +11,7 @@ namespace mauiapp1
 {
     public partial class MainPage : ContentPage
     {
-        string flaskServerIP = AppPreferences.ipaddr;
+        string? flaskServerIP = AppPreferences.ipaddr;
         string flaskServerPort = "5000";
         private List<CameraInfo> availableCameras = new List<CameraInfo>(); //elenca le fotocamere disponibili 
         public MainPage()
@@ -58,23 +58,61 @@ namespace mauiapp1
                 await DisplayAlert("Permission Denied", "Camera access is required to take pictures.", "OK");
                 return;
             }
-            availableCameras = cameraView.Cameras.ToList();
+
+            availableCameras.Clear();
+            availableCameras = cameraView.Cameras
+                .GroupBy(c => c.Name)
+                .Select(g => g.First())
+                .ToList();
+
             if (availableCameras.Count > 0)
             {
                 cameraPicker.ItemsSource = availableCameras.Select(c => c.Name).ToList();
                 cameraPicker.SelectedIndexChanged += CameraPicker_SelectedIndexChanged;
-                cameraView.Camera = availableCameras.First(); //camera di default
+                cameraView.Camera = availableCameras.First();
                 await cameraView.StartCameraAsync();
             }
+            else
+            {
+                await DisplayAlert("Error", "No cameras found.", "OK");
+            }
         }
+
         private async void CameraPicker_SelectedIndexChanged(object? sender, EventArgs e)
         {
             if (cameraPicker.SelectedIndex != -1)
             {
-                cameraView.Camera = availableCameras[cameraPicker.SelectedIndex];
-                await cameraView.StartCameraAsync();
+                try
+                {
+                    string? selectedCameraName = cameraPicker.SelectedItem.ToString();
+                    Console.WriteLine($"Selected Camera: {selectedCameraName}");
+                    CameraPosition cameraPosition = CameraPosition.Back;
+                    if(selectedCameraName != null)
+                    {
+                        if (selectedCameraName.Equals("Rear Camera", StringComparison.OrdinalIgnoreCase))
+                        {
+                            cameraPosition = CameraPosition.Back;
+                        }
+                        var cameras = cameraView.Cameras;
+                        var selectedCamera = cameras.FirstOrDefault(c => c.Position == cameraPosition);
+                        if (selectedCamera != null)
+                        {
+                            cameraView.Camera = selectedCamera;
+                            await cameraView.StartCameraAsync();
+                        }
+                    }                    
+                    else
+                    {
+                        await DisplayAlert("Error", "Camera not found.", "OK");
+                    }
+                }
+                catch (Exception ex)
+                {
+                    await DisplayAlert("Error", $"Failed to start the camera: {ex.Message}", "OK");
+                }
             }
         }
+
         private string? MakeReadable(string captioncontent)
         {
             using JsonDocument jsonDocument = JsonDocument.Parse(captioncontent); //il contenuto è JSON, quindi possiamo semplicemente prenderlo e effettuare il parsing (si dice "parsarlo"???)
@@ -198,6 +236,5 @@ namespace mauiapp1
                 }
             }
         }
-
     }
-}
+}   

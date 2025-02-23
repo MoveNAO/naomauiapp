@@ -1,1 +1,5 @@
 dotnet publish -f net8.0-android -c Release -r android-arm64 /p:AndroidPackageFormat=apk /m                               
+
+
+win 
+dotnet publish -f net8.0-windows10.0.19041.0 -c Release -p:PublishSingleFile=true -p:SelfContained=true
