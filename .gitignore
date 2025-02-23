@@ -3,6 +3,7 @@ obj/
 .idea/
 .cr/
 .vscode/
+.vs/
 *.user
 *.suo
 *.cache

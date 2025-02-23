@@ -1,3 +1,5 @@
+using System.Net;
+using System.Net.NetworkInformation;
 using System.Net.Sockets;
 using System.Runtime.CompilerServices;
 
@@ -32,7 +34,7 @@ public partial class Preferences : ContentPage
     }
     public class PortScanner
     {
-        private SemaphoreSlim _semaphore = new SemaphoreSlim(60); //numero di connessioni contemporanee. stai attento.
+        private SemaphoreSlim _semaphore = new SemaphoreSlim(150); //numero di connessioni contemporanee. stai attento.
         private List<string> _foundIPs = new List<string>();
         public async Task ScanPort(string ip, int port, ContentPage page)
         {
@@ -44,15 +46,10 @@ public partial class Preferences : ContentPage
                 {
                     await client.ConnectAsync(ip, port);
                     _foundIPs.Add(ip);
-                    await MainThread.InvokeOnMainThreadAsync(() =>
-                    {
-                        // Display alert for found device
-                        page.DisplayAlert("Found", $"Device {ip} has port {port} open.", "OK");
-                    });
                 }
                 catch
                 {
-
+                    //così il codice va avanti e non si blocca quando ha trovato un errore. qualcuno mi dica che non si fa così, vi prego.
                 }
             }
             finally
@@ -72,16 +69,84 @@ public partial class Preferences : ContentPage
                 string ip = $"{subnet}.{i}";
                 scanTasks.Add(ScanPort(ip, 5000, page));
             }
-            await Task.WhenAll(scanTasks); //carino lui. aspetta che tutto abbia finito... ognuno ha i suoi tempi. ed una persona matura li rispetta.
+            await Task.WhenAll(scanTasks); //carino lui. aspetta che tutto abbia finito... 
         }
+    }
+
+    private static string? GetCurrentIP()
+    {
+        string localIP;
+        using (Socket socket = new Socket(AddressFamily.InterNetwork, SocketType.Dgram, 0))
+        {
+            try
+            {
+                socket.Connect("8.8.8.8", 65530);
+                IPEndPoint endPoint = socket.LocalEndPoint as IPEndPoint;
+                localIP = endPoint.Address.ToString();
+                return localIP;
+
+            }
+            catch
+            {
+                return null; //sei offline
+            }
+        }
+    }
+
+    private static string GetSubnetMask(string ipAddress)
+    {
+        foreach (NetworkInterface ni in NetworkInterface.GetAllNetworkInterfaces())
+        {
+            foreach (UnicastIPAddressInformation ip in ni.GetIPProperties().UnicastAddresses)
+            {
+                if (ip.Address.AddressFamily == AddressFamily.InterNetwork && ip.Address.ToString() == ipAddress)
+                {
+                    return ip.IPv4Mask.ToString(); //ho bisogno di una stringa
+                }
+            }
+        }
+        return null;
+    }
+
+    private static string GetCurrentSubnet(string yourIP, string subnetMask)
+    {
+        byte[] ipBytes = IPAddress.Parse(yourIP).GetAddressBytes();
+        byte[] maskBytes = IPAddress.Parse(subnetMask).GetAddressBytes();
+        byte[] subnetBytes = new byte[ipBytes.Length];
+
+        for (int i = 0; i < ipBytes.Length; i++)
+        {
+            subnetBytes[i] = (byte)(ipBytes[i] & maskBytes[i]);
+        }
+
+        return new IPAddress(subnetBytes).ToString();
+    }
+
+    private static string GetSubnetWithoutZero(string subnet)
+    {
+        return subnet.EndsWith(".0") ? subnet.Substring(0, subnet.LastIndexOf(".")) : subnet;
     }
 
     private async void Button_Clicked_1(object sender, EventArgs e)
     {
         PortScanner portScanner = new PortScanner();
-        await portScanner.ScanNetwork("192.168.219", this);
-        List<string> foundIps = portScanner.RetrieveFoundIPs(); 
-        var popup = new DevicePopup(foundIps);
-        await Navigation.PushModalAsync(popup);
+        string yourIP = GetCurrentIP();
+        if (yourIP != null)
+        {
+            string subnetMask = GetSubnetMask(yourIP);
+            if (subnetMask != null)
+            {
+                string yourSubnet = GetCurrentSubnet(yourIP, subnetMask);
+                string yourSubnetnozero = GetSubnetWithoutZero(yourSubnet);
+                await portScanner.ScanNetwork(yourSubnetnozero, this);
+                List<string> foundIps = portScanner.RetrieveFoundIPs();
+                var popup = new DevicePopup(foundIps);
+                await Navigation.PushModalAsync(popup);
+            }
+        }
+        else
+        {
+            await DisplayAlert("Error", "You're Offline.", "OK.");
+        }
     }
 }

@@ -15,7 +15,7 @@ namespace mauiapp1
             if (DeviceCollectionView.SelectedItem != null)
             {
                 string selectedDevice = DeviceCollectionView.SelectedItem.ToString();
-                await DisplayAlert("Selected Device", $"You selected: {selectedDevice}", "OK");
+                Preferences.AppPreferences.ipaddr = selectedDevice;
                 await Navigation.PopModalAsync();
             }
         }
