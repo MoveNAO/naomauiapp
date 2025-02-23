@@ -18,9 +18,7 @@
             Grid.Row="0"/>
         <cv:CameraView
             x:Name="cameraView"
-            Grid.Row="1"
-            BackgroundColor="Red"/>
-        <!-- debug -->
+            Grid.Row="1"/>
         <Button
             x:Name="CounterBtn"
             Text="Take a Picture"

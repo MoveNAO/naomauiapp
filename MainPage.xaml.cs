@@ -28,6 +28,28 @@ namespace mauiapp1
                 cameraPicker.IsVisible = false;
             }
         }
+
+        protected async override void OnAppearing()
+        {
+            //la pagina ha problemi di reload quando è cambiata da android. così la pagina viene ricaricata forzatamente.
+            base.OnAppearing();
+
+            var temp = BindingContext;
+            BindingContext = null;
+            BindingContext = temp;
+            cameraView.CamerasLoaded += CameraView_CamerasLoaded;
+            if (DeviceInfo.Platform == DevicePlatform.Android)
+            {
+                //goloso codice specifico per android
+                cameraPicker.IsVisible = true;
+            }
+            else
+            {
+                cameraPicker.IsVisible = false;
+            }
+            await cameraView.StartCameraAsync();
+        }
+
         private async void CameraView_CamerasLoaded(object? sender, EventArgs e)
         {
             var status = await Permissions.RequestAsync<Permissions.Camera>();
