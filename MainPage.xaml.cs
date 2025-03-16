@@ -60,7 +60,7 @@ namespace mauiapp1
             var status = await Permissions.RequestAsync<Permissions.Camera>();
             if (status != PermissionStatus.Granted)
             {
-                await DisplayAlert("Permission Denied", "Camera access is required to take pictures.", "OK");
+                await DisplayAlert(mauiapp1.Properties.Resources.PermissionDenied, Properties.Resources.CameraAccessIsRequiredToTakePictures, Properties.Resources.OK);
                 return;
             }
 
@@ -79,7 +79,7 @@ namespace mauiapp1
             }
             else
             {
-                await DisplayAlert("Error", "No cameras found.", "OK");
+                await DisplayAlert(Properties.Resources.Error, Properties.Resources.NoCamerasFound, Properties.Resources.OK);
             }
         }
 
@@ -90,7 +90,8 @@ namespace mauiapp1
                 try
                 {
                     string? selectedCameraName = cameraPicker.SelectedItem.ToString();
-                    Console.WriteLine($"Selected Camera: {selectedCameraName}");
+                    string selectedCameraMessage = Properties.Resources.SelectedCamera;
+                    Console.WriteLine(selectedCameraMessage + selectedCameraName);
                     CameraPosition cameraPosition = CameraPosition.Back;
                     if(selectedCameraName != null)
                     {
@@ -108,12 +109,17 @@ namespace mauiapp1
                     }                    
                     else
                     {
-                        await DisplayAlert("Error", "Camera not found.", "OK");
+                        await DisplayAlert(Properties.Resources.Error, 
+                                  Properties.Resources.CameraNotFound, 
+                                  "OK");
                     }
                 }
                 catch (Exception ex)
                 {
-                    await DisplayAlert("Error", $"Failed to start the camera: {ex.Message}", "OK");
+                    string message = Properties.Resources.FailedToStartTheCamera;
+                    await DisplayAlert(Properties.Resources.Error, 
+                              message + ex.Message, 
+                              Properties.Resources.OK);
                 }
             }
         }
@@ -151,12 +157,16 @@ namespace mauiapp1
                     content.Add(new ByteArrayContent(fileBytes), "file", fileName);
                     HttpResponseMessage response = await client.PostAsync(uploadURL, content);
                     string imageresult = await response.Content.ReadAsStringAsync();
-                    await DisplayAlert("Upload Status", imageresult, "OK");
+                    await DisplayAlert(Properties.Resources.UploadStatus, 
+                              imageresult, 
+                              Properties.Resources.OK);
                 }
                 catch (Exception ex)
                 {
                     string exception = ex.ToString();
-                    await DisplayAlert("Uploading Error!", exception, "OK.");
+                    await DisplayAlert(Properties.Resources.UploadingError, 
+                              exception, 
+                              Properties.Resources.OK);
                 }
             }
         }
@@ -195,7 +205,9 @@ namespace mauiapp1
                             });
                             string captioncontent = await caption.Content.ReadAsStringAsync();
                             string? readablecaptioncontent = MakeReadable(captioncontent);
-                            await DisplayAlert("Image Caption", readablecaptioncontent ?? "Your caption wasn't found.", "OK");
+                            await DisplayAlert(Properties.Resources.ImageCaption, 
+                                      readablecaptioncontent ?? Properties.Resources.YourCaptionWasnTFound, 
+                                      Properties.Resources.OK);
                             if (readablecaptioncontent != null)
                             {
                                 PrintToJSON(readablecaptioncontent);
@@ -209,12 +221,16 @@ namespace mauiapp1
                     {
                         LoadingOverlay.IsVisible = false;
                     });
-                    await DisplayAlert("Error", "The image caption could was not found in the specified time range.", "OK");
+                    await DisplayAlert(Properties.Resources.Error, 
+                              Properties.Resources.ImgCaptionNotFound, 
+                              Properties.Resources.OK);
                 }
                 catch (Exception ex)
                 {
                     string exception = ex.ToString();
-                    await DisplayAlert("Download Error!", exception, "OK.");
+                    await DisplayAlert(Properties.Resources.Error, 
+                              exception, 
+                              Properties.Resources.OK);
                 }
             }
         }
@@ -247,13 +263,15 @@ namespace mauiapp1
                         catch (Exception ex)
                         {
                             string exception = ex.ToString();
-                            await DisplayAlert("Error!", exception, "OK.");
+                            await DisplayAlert(Properties.Resources.Error, exception, Properties.Resources.OK);
                         }
                     }
                 }
                 else
                 {
-                    await DisplayAlert("IP", "Your IP is null, or invalid. Please assign a real IP to the program via the Preferences tab.", "OK");
+                    await DisplayAlert("IP", 
+                              Properties.Resources.NullInvalidIP, 
+                              Properties.Resources.OK);
                 }
             }
         }

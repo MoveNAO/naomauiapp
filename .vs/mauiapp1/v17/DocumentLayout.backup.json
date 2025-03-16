@@ -3,6 +3,10 @@
   "WorkspaceRootPath": "D:\\apk1\\mauiapp1\\",
   "Documents": [
     {
+      "AbsoluteMoniker": "D:0:0:{082651D3-1F19-4348-92C1-CCE75CD10D32}|mauiapp1.csproj|d:\\apk1\\mauiapp1\\mainpage.xaml.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{082651D3-1F19-4348-92C1-CCE75CD10D32}|mauiapp1.csproj|solutionrelative:mainpage.xaml.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
       "AbsoluteMoniker": "D:0:0:{082651D3-1F19-4348-92C1-CCE75CD10D32}|mauiapp1.csproj|d:\\apk1\\mauiapp1\\recents.xaml.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{082651D3-1F19-4348-92C1-CCE75CD10D32}|mauiapp1.csproj|solutionrelative:recents.xaml.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
@@ -31,10 +35,6 @@
       "RelativeMoniker": "D:0:0:{082651D3-1F19-4348-92C1-CCE75CD10D32}|mauiapp1.csproj|solutionrelative:mainpage.xaml||{F11ACC28-31D1-4C80-A34B-F4E09D3D753C}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{082651D3-1F19-4348-92C1-CCE75CD10D32}|mauiapp1.csproj|d:\\apk1\\mauiapp1\\mainpage.xaml.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{082651D3-1F19-4348-92C1-CCE75CD10D32}|mauiapp1.csproj|solutionrelative:mainpage.xaml.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
       "AbsoluteMoniker": "D:0:0:{082651D3-1F19-4348-92C1-CCE75CD10D32}|mauiapp1.csproj|d:\\apk1\\mauiapp1\\mauiprogram.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{082651D3-1F19-4348-92C1-CCE75CD10D32}|mauiapp1.csproj|solutionrelative:mauiprogram.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
@@ -50,7 +50,7 @@
       "DocumentGroups": [
         {
           "DockedHeight": 200,
-          "SelectedChildIndex": 2,
+          "SelectedChildIndex": 3,
           "Children": [
             {
               "$type": "Bookmark",
@@ -58,7 +58,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 1,
+              "DocumentIndex": 2,
               "Title": "Recents.xaml",
               "DocumentMoniker": "D:\\apk1\\mauiapp1\\Recents.xaml",
               "RelativeDocumentMoniker": "Recents.xaml",
@@ -71,33 +71,33 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 0,
+              "DocumentIndex": 1,
               "Title": "Recents.xaml.cs",
               "DocumentMoniker": "D:\\apk1\\mauiapp1\\Recents.xaml.cs",
               "RelativeDocumentMoniker": "Recents.xaml.cs",
               "ToolTip": "D:\\apk1\\mauiapp1\\Recents.xaml.cs",
               "RelativeToolTip": "Recents.xaml.cs",
-              "ViewState": "AgIAAB4AAAAAAAAAAAAAADQAAAANAAAAAAAAAA==",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAADIAAAANAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2025-03-16T16:23:30.767Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 7,
+              "DocumentIndex": 0,
               "Title": "MainPage.xaml.cs",
               "DocumentMoniker": "D:\\apk1\\mauiapp1\\MainPage.xaml.cs",
               "RelativeDocumentMoniker": "MainPage.xaml.cs",
               "ToolTip": "D:\\apk1\\mauiapp1\\MainPage.xaml.cs",
               "RelativeToolTip": "MainPage.xaml.cs",
-              "ViewState": "AgIAABQBAAAAAAAAAAAqwB8BAABFAAAAAAAAAA==",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAB8BAABFAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2025-01-28T16:09:01.421Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 6,
+              "DocumentIndex": 7,
               "Title": "MainPage.xaml",
               "DocumentMoniker": "D:\\apk1\\mauiapp1\\MainPage.xaml",
               "RelativeDocumentMoniker": "MainPage.xaml",
@@ -110,7 +110,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 5,
+              "DocumentIndex": 6,
               "Title": "DevicePopup.xaml.cs",
               "DocumentMoniker": "D:\\apk1\\mauiapp1\\DevicePopup.xaml.cs",
               "RelativeDocumentMoniker": "DevicePopup.xaml.cs",
@@ -123,7 +123,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 4,
+              "DocumentIndex": 5,
               "Title": "DevicePopup.xaml",
               "DocumentMoniker": "D:\\apk1\\mauiapp1\\DevicePopup.xaml",
               "RelativeDocumentMoniker": "DevicePopup.xaml",
@@ -136,7 +136,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 3,
+              "DocumentIndex": 4,
               "Title": "Preferences.xaml",
               "DocumentMoniker": "D:\\apk1\\mauiapp1\\Preferences.xaml",
               "RelativeDocumentMoniker": "Preferences.xaml",
@@ -149,7 +149,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 2,
+              "DocumentIndex": 3,
               "Title": "Preferences.xaml.cs",
               "DocumentMoniker": "D:\\apk1\\mauiapp1\\Preferences.xaml.cs",
               "RelativeDocumentMoniker": "Preferences.xaml.cs",
