@@ -9,6 +9,11 @@ using static mauiapp1.Preferences;
 
 namespace mauiapp1
 {
+    public class ScannedObject
+    {
+        public DateTimeOffset scandate { get; set; }
+        public string? analysedcaption { get; set; }
+    }
     public partial class MainPage : ContentPage
     {
         string? flaskServerIP = AppPreferences.ipaddr;
@@ -165,7 +170,7 @@ namespace mauiapp1
             byte tempForParsing;
             return splitValues.All(r => byte.TryParse(r, out tempForParsing));
         }
-        private async void DownloadPhoto(string downloadURL)
+        private async void DownloadCaption(string downloadURL)
         {
             using (HttpClient client = new HttpClient())
             {
@@ -177,18 +182,34 @@ namespace mauiapp1
                     int delay = 5000; //ritardo tra un tentativo di connessione e l'altro, in millisecondi
                     while (attempts < maximumAttempts)
                     {
+                        MainThread.BeginInvokeOnMainThread(() =>
+                        {
+                            LoadingOverlay.IsVisible = true;
+                        });
                         HttpResponseMessage caption = await client.GetAsync(downloadURL);
                         if (caption.IsSuccessStatusCode)
                         {
+                            MainThread.BeginInvokeOnMainThread(() =>
+                            {
+                                LoadingOverlay.IsVisible = false;
+                            });
                             string captioncontent = await caption.Content.ReadAsStringAsync();
                             string? readablecaptioncontent = MakeReadable(captioncontent);
                             await DisplayAlert("Image Caption", readablecaptioncontent ?? "Your caption wasn't found.", "OK");
+                            if (readablecaptioncontent != null)
+                            {
+                                PrintToJSON(readablecaptioncontent);
+                            }
                             return;
                         }
                         attempts++;
                         await Task.Delay(delay);
                     }
-                    await DisplayAlert("Error", "The image caption could was not found between the specified time range.", "OK");
+                    MainThread.BeginInvokeOnMainThread(() =>
+                    {
+                        LoadingOverlay.IsVisible = false;
+                    });
+                    await DisplayAlert("Error", "The image caption could was not found in the specified time range.", "OK");
                 }
                 catch (Exception ex)
                 {
@@ -219,7 +240,7 @@ namespace mauiapp1
                             string uploadURL = $"http://{flaskServerIP}:{flaskServerPort}/upload";
                             UploadPhoto(uploadURL, filePath, fileName);
                             string downloadURL = $"http://{flaskServerIP}:{flaskServerPort}/download/caption.txt";
-                            DownloadPhoto(downloadURL);
+                            DownloadCaption(downloadURL);
                             string deleteURL = $"http://{flaskServerIP}:{flaskServerPort}/delete/caption";
                             DeleteCaption(deleteURL);
                         }
@@ -234,6 +255,37 @@ namespace mauiapp1
                 {
                     await DisplayAlert("IP", "Your IP is null, or invalid. Please assign a real IP to the program via the Preferences tab.", "OK");
                 }
+            }
+        }
+        private void PrintToJSON(string caption)
+        {
+            //stampa caption e data corrente in un JSON
+            DateTime thisDay = DateTime.Today;
+            var scannedObject = new ScannedObject
+            {
+                scandate = thisDay,
+                analysedcaption = caption
+            };
+            string tempPath = System.IO.Path.GetTempPath();
+            string filename = tempPath + "\\scannedobjects.json";
+            List<ScannedObject> scannedObjects = new();
+            if (File.Exists(filename))
+            {
+                try
+                {
+                    string existingJSON = File.ReadAllText(filename); //così prende tutti i dati dal file esistente
+                    if (!string.IsNullOrWhiteSpace(existingJSON))
+                    {
+                        scannedObjects = JsonSerializer.Deserialize<List<ScannedObject>>(existingJSON) ?? new List<ScannedObject>();
+                    }
+                }
+                catch (JsonException) //oh ma esiste
+                {
+
+                }
+                scannedObjects.Add(scannedObject);
+                string scannedObjectJSONString = JsonSerializer.Serialize(scannedObjects, new JsonSerializerOptions { WriteIndented = true });
+                File.WriteAllText(filename, scannedObjectJSONString);
             }
         }
     }

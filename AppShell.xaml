@@ -16,5 +16,9 @@
             Title="Preferences"
             ContentTemplate="{DataTemplate local:Preferences}"
             Icon="icon_prefs" />
+        <ShellContent
+            Title="Recents"
+            ContentTemplate="{DataTemplate local:Recents}"
+            Icon="icon_recents" />
     </TabBar>
 </Shell>

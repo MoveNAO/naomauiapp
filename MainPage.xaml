@@ -3,26 +3,32 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:cv="clr-namespace:Camera.MAUI;assembly=Camera.MAUI"
              x:Class="mauiapp1.MainPage">
-    <Grid
-        RowSpacing="40"
-        Margin="16, 16, 16, 16">
+
+    <Grid RowSpacing="40" Margin="16">
         <Grid.RowDefinitions>
             <RowDefinition Height="0.5*" />
             <RowDefinition Height="7.5*" />
             <RowDefinition Height="1.9*" />
             <RowDefinition Height="0.1*" />
         </Grid.RowDefinitions>
-        <Picker
-            x:Name="cameraPicker"
-            Title="Select Camera"
-            Grid.Row="0"/>
-        <cv:CameraView
-            x:Name="cameraView"
-            Grid.Row="1"/>
-        <Button
-            x:Name="CounterBtn"
-            Text="Take a Picture"
-            Clicked="TakePhoto"
-            Grid.Row="2" />
+
+        <Picker x:Name="cameraPicker" Title="Select Camera" Grid.Row="0"/>
+
+        <cv:CameraView x:Name="cameraView" Grid.Row="1"/>
+
+        <Button x:Name="CounterBtn" Text="Take a Picture" Clicked="TakePhoto" Grid.Row="2"/>
+
+        <Grid x:Name="LoadingOverlay"
+              BackgroundColor="#80000000"
+              IsVisible="False"
+              Grid.RowSpan="4"
+              VerticalOptions="FillAndExpand"
+              HorizontalOptions="FillAndExpand">
+            <StackLayout VerticalOptions="Center" HorizontalOptions="Center">
+                <ActivityIndicator IsRunning="True" Color="White" />
+                <Label Text="Loading..." TextColor="White" Margin="0,10,0,0" />
+            </StackLayout>
+        </Grid>
     </Grid>
+
 </ContentPage>

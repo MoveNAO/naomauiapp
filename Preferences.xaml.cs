@@ -157,7 +157,14 @@ public partial class Preferences : ContentPage
                     });
                     List<string> foundIps = portScanner.RetrieveFoundIPs();
                     var popup = new DevicePopup(foundIps);
-                    await Navigation.PushModalAsync(popup);
+                    MainThread.BeginInvokeOnMainThread(() =>
+                    {
+                        var window = Application.Current.Windows.FirstOrDefault();
+                        if (window != null)
+                        {
+                            window.Page.Navigation.PushModalAsync(popup);
+                        }
+                    });
                 });
             }
             else

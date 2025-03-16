@@ -1,0 +1,18 @@
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="mauiapp1.Recents"
+             Title="Recents">
+    <VerticalStackLayout>
+        <ListView x:Name="recentItemsListView">
+            <ListView.ItemTemplate>
+                <DataTemplate>
+                    <TextCell Text="{Binding analysedcaption}" 
+                              Detail="{Binding scandate, StringFormat='{}{0:yyyy-MM-dd HH:mm:ss}'}" />
+                </DataTemplate>
+            </ListView.ItemTemplate>
+        </ListView>
+        <Label x:Name="the_nothingness"
+               Text="Nothing is here. Run some scans and you'll see them here."
+               IsVisible="false" />
+    </VerticalStackLayout>
+</ContentPage>
