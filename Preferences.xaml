@@ -20,7 +20,15 @@
                 Text="Set."
                 Clicked="Button_Clicked"/>
         </VerticalStackLayout>
-
+        <Grid x:Name="LoadingOverlay" IsVisible="false"
+          BackgroundColor="#80000000"
+          AbsoluteLayout.LayoutBounds="0,0,1,1"
+          AbsoluteLayout.LayoutFlags="All">
+            <StackLayout VerticalOptions="Center" HorizontalOptions="Center">
+                <ActivityIndicator IsRunning="True" Color="White" />
+                <Label Text="Loading..." TextColor="White" Margin="0,10,0,0" />
+            </StackLayout>
+        </Grid>
         <Button
             Grid.Row="2" 
             Text="Find IPs."

@@ -1,3 +1,4 @@
+using Controls.UserDialogs.Maui;
 using System.Net;
 using System.Net.NetworkInformation;
 using System.Net.Sockets;
@@ -9,9 +10,9 @@ public partial class Preferences : ContentPage
 {
     string? ipaddr;
     public Preferences()
-	{
-		InitializeComponent();
-	}
+    {
+        InitializeComponent();
+    }
     public static class AppPreferences
     {
         public static string? ipaddr { get; set; }
@@ -27,7 +28,7 @@ public partial class Preferences : ContentPage
             AppPreferences.ipaddr = ipaddr;
             DisplayAlert("IP Set.", "Your IP Address was succesfully set.", "OK");
         }
-        else if(ipaddr == null)
+        else if (ipaddr == null)
         {
             DisplayAlert("Error.", "Your IP is null. Please set one.", "OK");
         }
@@ -54,7 +55,7 @@ public partial class Preferences : ContentPage
             }
             finally
             {
-                _semaphore.Release(); 
+                _semaphore.Release();
             }
         }
 
@@ -82,7 +83,7 @@ public partial class Preferences : ContentPage
             {
                 socket.Connect("8.8.8.8", 65530);
                 IPEndPoint? endPoint = socket.LocalEndPoint as IPEndPoint;
-                if(endPoint != null)
+                if (endPoint != null)
                 {
                     localIP = endPoint.Address.ToString();
                     return localIP;
@@ -141,15 +142,27 @@ public partial class Preferences : ContentPage
             {
                 string yourSubnet = GetCurrentSubnet(yourIP, subnetMask);
                 string yourSubnetnozero = GetSubnetWithoutZero(yourSubnet);
-                await portScanner.ScanNetwork(yourSubnetnozero, this);
-                List<string> foundIps = portScanner.RetrieveFoundIPs();
-                var popup = new DevicePopup(foundIps);
-                await Navigation.PushModalAsync(popup);
+                await Task.Run(async () =>
+                {
+                    MainThread.BeginInvokeOnMainThread(() =>
+                    {
+                        LoadingOverlay.IsVisible = true;
+                    });
+
+                    await portScanner.ScanNetwork(yourSubnetnozero, this);
+
+                    MainThread.BeginInvokeOnMainThread(() =>
+                    {
+                        LoadingOverlay.IsVisible = false;
+                    });
+                    List<string> foundIps = portScanner.RetrieveFoundIPs();
+                    var popup = new DevicePopup(foundIps);
+                    await Navigation.PushModalAsync(popup);
+                });
+            }
+            else
+            {
+                await DisplayAlert("Error", "You're Offline.", "OK.");
             }
         }
-        else
-        {
-            await DisplayAlert("Error", "You're Offline.", "OK.");
-        }
-    }
-}
+    } }
