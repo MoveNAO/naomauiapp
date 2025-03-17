@@ -9,9 +9,13 @@ namespace mauiapp1
             InitializeComponent();
             DeviceCollectionView.ItemsSource = devices;
         }
-
-        private async void DeviceCollectionView_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        protected override void OnAppearing()
         {
+            deviceselector.Text = Properties.Resources.DeviceSelection;
+            cancelbutton.Text = Properties.Resources.Cancel;
+        }
+        private async void DeviceCollectionView_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        { 
             if (DeviceCollectionView.SelectedItem != null)
             {
                 string? selectedDevice = DeviceCollectionView.SelectedItem.ToString();

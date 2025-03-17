@@ -123,4 +123,70 @@
   <data name="CameraAccessIsRequiredToTakePictures" xml:space="preserve">
     <value>L'accesso alla fotocamera è richiesto per fare fotografie.</value>
   </data>
+  <data name="Error" xml:space="preserve">
+    <value>Errore</value>
+  </data>
+  <data name="NoCamerasFound" xml:space="preserve">
+    <value>Nessuna fotocamera trovata.</value>
+  </data>
+  <data name="OK" xml:space="preserve">
+    <value>OK</value>
+  </data>
+  <data name="SelectedCamera" xml:space="preserve">
+    <value>Fotocamera selezionata:</value>
+  </data>
+  <data name="CameraNotFound" xml:space="preserve">
+    <value>Fotocamera non trovata.</value>
+  </data>
+  <data name="FailedToStartTheCamera" xml:space="preserve">
+    <value>L'avvio della fotocamera è fallito:</value>
+  </data>
+  <data name="UploadStatus" xml:space="preserve">
+    <value>Stato del Caricamento</value>
+  </data>
+  <data name="UploadingError" xml:space="preserve">
+    <value>Errore di Caricamento!</value>
+  </data>
+  <data name="ImageCaption" xml:space="preserve">
+    <value>Didascalia dell'Immagine</value>
+  </data>
+  <data name="YourCaptionWasnTFound" xml:space="preserve">
+    <value>Impossibile trovare la descrizione.</value>
+  </data>
+  <data name="ImgCaptionNotFound" xml:space="preserve">
+    <value>La didascalia dell'immagine non è stata trovata nell'intervallo di tempo specificato.</value>
+  </data>
+  <data name="NullInvalidIP" xml:space="preserve">
+    <value>Il tuo IP è nullo, oppure invalido. Assegna un IP esistente tramite la scheda "Preferenze".</value>
+  </data>
+  <data name="IPSet" xml:space="preserve">
+    <value>IP impostato.</value>
+  </data>
+  <data name="IpSuccess" xml:space="preserve">
+    <value>Il tuo indirizzo IP è stato impostato con successo.</value>
+  </data>
+  <data name="IpNull" xml:space="preserve">
+    <value>Il tuo IP è nullo. Per favore impostane uno.</value>
+  </data>
+  <data name="Offline" xml:space="preserve">
+    <value>Sei offline.</value>
+  </data>
+  <data name="SetCamera" xml:space="preserve">
+    <value>Imposta Camera</value>
+  </data>
+  <data name="TakeAPicture" xml:space="preserve">
+    <value>Scatta una Foto</value>
+  </data>
+  <data name="Loading" xml:space="preserve">
+    <value>Caricamento...</value>
+  </data>
+  <data name="SetIP" xml:space="preserve">
+    <value>Imposta il tuo IP</value>
+  </data>
+  <data name="Cancel" xml:space="preserve">
+    <value>Annulla</value>
+  </data>
+  <data name="DeviceSelection" xml:space="preserve">
+    <value>Seleziona un Dispositivo:</value>
+  </data>
 </root>

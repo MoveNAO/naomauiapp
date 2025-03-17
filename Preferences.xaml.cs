@@ -26,11 +26,11 @@ public partial class Preferences : ContentPage
         if (ipaddr != null)
         {
             AppPreferences.ipaddr = ipaddr;
-            DisplayAlert("IP Set.", "Your IP Address was succesfully set.", "OK");
+            DisplayAlert(Properties.Resources.SetIP, Properties.Resources.IpSuccess, Properties.Resources.OK);
         }
         else if (ipaddr == null)
         {
-            DisplayAlert("Error.", "Your IP is null. Please set one.", "OK");
+            DisplayAlert(Properties.Resources.Error, Properties.Resources.IpNull, Properties.Resources.OK);
         }
     }
     public class PortScanner
@@ -50,7 +50,7 @@ public partial class Preferences : ContentPage
                 }
                 catch
                 {
-                    //così il codice va avanti e non si blocca quando ha trovato un errore. qualcuno mi dica che non si fa così, vi prego.
+                    //cosï¿½ il codice va avanti e non si blocca quando ha trovato un errore. qualcuno mi dica che non si fa cosï¿½, vi prego.
                 }
             }
             finally
@@ -169,7 +169,7 @@ public partial class Preferences : ContentPage
             }
             else
             {
-                await DisplayAlert("Error", "You're Offline.", "OK.");
+                await DisplayAlert(Properties.Resources.Error, Properties.Resources.Offline, Properties.Resources.OK);
             }
         }
     } }

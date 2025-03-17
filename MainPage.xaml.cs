@@ -3,6 +3,8 @@ using Microsoft.Maui;
 using Microsoft.Maui.Devices;
 using Microsoft.Maui.LifecycleEvents;
 using Microsoft.Maui.Storage;
+using System.Globalization;
+using System.Threading;
 using System.IO;
 using System.Text.Json;
 using static mauiapp1.Preferences;
@@ -22,6 +24,7 @@ namespace mauiapp1
         public MainPage()
         {
             InitializeComponent();
+            SetAppLanguage();
             cameraView.CamerasLoaded += CameraView_CamerasLoaded;
             if (DeviceInfo.Platform == DevicePlatform.Android)
             {
@@ -38,7 +41,9 @@ namespace mauiapp1
         {
             //la pagina ha problemi di reload quando è cambiata da android. così la pagina viene ricaricata forzatamente.
             base.OnAppearing();
-
+            cameraPicker.Title = Properties.Resources.SetCamera;
+            CounterBtn.Text = Properties.Resources.TakeAPicture;
+            loadinglabel.Text = Properties.Resources.Loading;
             var temp = BindingContext;
             BindingContext = null;
             BindingContext = temp;
@@ -53,6 +58,13 @@ namespace mauiapp1
                 cameraPicker.IsVisible = false;
             }
             await cameraView.StartCameraAsync();
+        }
+
+        private void SetAppLanguage()
+        {
+            var deviceLanguage = CultureInfo.CurrentCulture;
+            Thread.CurrentThread.CurrentCulture = deviceLanguage;
+            Thread.CurrentThread.CurrentUICulture = deviceLanguage;
         }
 
         private async void CameraView_CamerasLoaded(object? sender, EventArgs e)

@@ -79,6 +79,24 @@ namespace mauiapp1.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Cancel.
+        /// </summary>
+        internal static string Cancel {
+            get {
+                return ResourceManager.GetString("Cancel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Select a Device:.
+        /// </summary>
+        internal static string DeviceSelection {
+            get {
+                return ResourceManager.GetString("DeviceSelection", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Error.
         /// </summary>
         internal static string Error {
@@ -106,11 +124,47 @@ namespace mauiapp1.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to The image caption could was not found in the specified time range..
+        ///   Looks up a localized string similar to The image caption was not found in the specified time range..
         /// </summary>
         internal static string ImgCaptionNotFound {
             get {
                 return ResourceManager.GetString("ImgCaptionNotFound", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Your IP is null. Please set one..
+        /// </summary>
+        internal static string IpNull {
+            get {
+                return ResourceManager.GetString("IpNull", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to IP Set..
+        /// </summary>
+        internal static string IPSet {
+            get {
+                return ResourceManager.GetString("IPSet", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Your IP Address was succesfully set..
+        /// </summary>
+        internal static string IpSuccess {
+            get {
+                return ResourceManager.GetString("IpSuccess", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Loading....
+        /// </summary>
+        internal static string Loading {
+            get {
+                return ResourceManager.GetString("Loading", resourceCulture);
             }
         }
         
@@ -120,6 +174,24 @@ namespace mauiapp1.Properties {
         internal static string NoCamerasFound {
             get {
                 return ResourceManager.GetString("NoCamerasFound", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Your IP is null, or invalid. Please assign a real IP to the program via the Preferences tab..
+        /// </summary>
+        internal static string NullInvalidIP {
+            get {
+                return ResourceManager.GetString("NullInvalidIP", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to You&apos;re Offline..
+        /// </summary>
+        internal static string Offline {
+            get {
+                return ResourceManager.GetString("Offline", resourceCulture);
             }
         }
         
@@ -147,6 +219,33 @@ namespace mauiapp1.Properties {
         internal static string SelectedCamera {
             get {
                 return ResourceManager.GetString("SelectedCamera", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Set Camera..
+        /// </summary>
+        internal static string SetCamera {
+            get {
+                return ResourceManager.GetString("SetCamera", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Set your IP..
+        /// </summary>
+        internal static string SetIP {
+            get {
+                return ResourceManager.GetString("SetIP", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Take a Picture.
+        /// </summary>
+        internal static string TakeAPicture {
+            get {
+                return ResourceManager.GetString("TakeAPicture", resourceCulture);
             }
         }
         
