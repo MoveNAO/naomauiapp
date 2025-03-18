@@ -9,7 +9,8 @@
 		<SingleProject>true</SingleProject>
 		<ImplicitUsings>enable</ImplicitUsings>
 		<Nullable>enable</Nullable>
-		<WindowsPackageType>None</WindowsPackageType>
+		<AndroidEnableNETExperimental>false</AndroidEnableNETExperimental>
+		<!-- <WindowsPackageType>None</WindowsPackageType> -->
 		<ApplicationTitle>mauiapp1</ApplicationTitle>
 		<ApplicationId>com.NAO.NAO</ApplicationId>
 		<ApplicationDisplayVersion>1.0</ApplicationDisplayVersion>
@@ -134,10 +135,10 @@
 
 	<ItemGroup>
 		<!-- App Icon -->
-		<MauiIcon Include="Resources\AppIcon\appicon.svg" ForegroundFile="Resources\AppIcon\appiconfg.svg" Color="#512BD4" />
+		<!-- <MauiIcon Include="Resources\AppIcon\appicon.svg" /> -->
 
 		<!-- Splash Screen -->
-		<MauiSplashScreen Include="Resources\Splash\splash.svg" Color="#512BD4" BaseSize="128,128" />
+		<!-- <MauiSplashScreen Include="Resources\Splash\splash.svg" Color="#512BD4" BaseSize="128,128" /> -->
 
 		<!-- Images -->
 		<MauiImage Include="Resources\Images\*" />
@@ -194,4 +195,10 @@
       <PackageDownload Remove="Microsoft.NETCore.App.Runtime.%(_ProblematicRIDs.Identity)" />
     </ItemGroup>
   </Target>
+  <ItemGroup>
+    <AndroidResource Include="Resources\mipmap\mipmap-mdpi\appicon.png" />
+    <AndroidResource Include="Resources\mipmap\mipmap-hdpi\appicon.png" />
+    <AndroidResource Include="Resources\mipmap\mipmap-xhdpi\appicon.png" />
+    <AndroidResource Include="Resources\mipmap\mipmap-xxhdpi\appicon.png" />
+</ItemGroup>
 </Project>
