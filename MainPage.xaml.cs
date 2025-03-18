@@ -138,18 +138,23 @@ namespace mauiapp1
 
         private string? MakeReadable(string captioncontent)
         {
-            using JsonDocument jsonDocument = JsonDocument.Parse(captioncontent); //il contenuto è JSON, quindi possiamo semplicemente prenderlo e effettuare il parsing (si dice "parsarlo"???)
-            string? readable = jsonDocument.RootElement.GetProperty("<CAPTION>").GetString(); //potrei usare anche toString, in teoria. Ma siccome GetString è proprio di JsonDocument, ho preferito usare lui.
-            if(readable != null)
+            using JsonDocument jsonDocument = JsonDocument.Parse(captioncontent);
+            
+            if (jsonDocument.RootElement.TryGetProperty("<CAPTION>", out JsonElement captionElement))
             {
-                return readable;
+                if (captionElement.ValueKind == JsonValueKind.String)
+                {
+                    return captionElement.GetString();
+                }
+                else if (captionElement.ValueKind == JsonValueKind.Object)
+                {
+                    if (captionElement.TryGetProperty("text", out JsonElement textElement))
+                    {
+                        return textElement.GetString();
+                    }
+                }
             }
-            else
-            {
-                //qua hai passato una caption nulla, non so quanto andrai avanti col codice
-                return null;
-
-            }
+            return null;
         }
         private async void DeleteCaption(string captionURL)
         {
