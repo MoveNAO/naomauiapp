@@ -3,8 +3,16 @@
   "WorkspaceRootPath": "D:\\apk1\\mauiapp1\\",
   "Documents": [
     {
+      "AbsoluteMoniker": "D:0:0:{082651D3-1F19-4348-92C1-CCE75CD10D32}|mauiapp1.csproj|d:\\apk1\\mauiapp1\\mainpage.xaml.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{082651D3-1F19-4348-92C1-CCE75CD10D32}|mauiapp1.csproj|solutionrelative:mainpage.xaml.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
       "AbsoluteMoniker": "D:0:0:{082651D3-1F19-4348-92C1-CCE75CD10D32}|mauiapp1.csproj|d:\\apk1\\mauiapp1\\dotnet.txt||{8B382828-6202-11D1-8870-0000F87579D2}",
       "RelativeMoniker": "D:0:0:{082651D3-1F19-4348-92C1-CCE75CD10D32}|mauiapp1.csproj|solutionrelative:dotnet.txt||{8B382828-6202-11D1-8870-0000F87579D2}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{082651D3-1F19-4348-92C1-CCE75CD10D32}|mauiapp1.csproj|d:\\apk1\\mauiapp1\\mauiapp1.csproj.bak||{FA3CD31E-987B-443A-9B81-186104E8DAC1}",
+      "RelativeMoniker": "D:0:0:{082651D3-1F19-4348-92C1-CCE75CD10D32}|mauiapp1.csproj|solutionrelative:mauiapp1.csproj.bak||{FA3CD31E-987B-443A-9B81-186104E8DAC1}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{082651D3-1F19-4348-92C1-CCE75CD10D32}|mauiapp1.csproj|d:\\apk1\\mauiapp1\\devicepopup.xaml.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
@@ -13,10 +21,6 @@
     {
       "AbsoluteMoniker": "D:0:0:{082651D3-1F19-4348-92C1-CCE75CD10D32}|mauiapp1.csproj|d:\\apk1\\mauiapp1\\properties\\resources.resx||{81828910-B8B3-4D2B-99A3-067027C180C1}",
       "RelativeMoniker": "D:0:0:{082651D3-1F19-4348-92C1-CCE75CD10D32}|mauiapp1.csproj|solutionrelative:properties\\resources.resx||{81828910-B8B3-4D2B-99A3-067027C180C1}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{082651D3-1F19-4348-92C1-CCE75CD10D32}|mauiapp1.csproj|d:\\apk1\\mauiapp1\\mainpage.xaml.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{082651D3-1F19-4348-92C1-CCE75CD10D32}|mauiapp1.csproj|solutionrelative:mainpage.xaml.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{082651D3-1F19-4348-92C1-CCE75CD10D32}|mauiapp1.csproj|d:\\apk1\\mauiapp1\\recents.xaml.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
@@ -49,44 +53,28 @@
       "DocumentGroups": [
         {
           "DockedHeight": 200,
-          "SelectedChildIndex": 6,
+          "SelectedChildIndex": 7,
           "Children": [
             {
               "$type": "Bookmark",
               "Name": "ST:0:0:{d78612c7-9962-4b83-95d9-268046dad23a}"
             },
             {
-              "$type": "Bookmark",
-              "Name": "ST:0:0:{e5c86464-96be-4d7c-9a8b-abcb3bbf5f92}"
-            },
-            {
               "$type": "Document",
               "DocumentIndex": 2,
-              "Title": "Resources.resx",
-              "DocumentMoniker": "D:\\apk1\\mauiapp1\\Properties\\Resources.resx",
-              "RelativeDocumentMoniker": "Properties\\Resources.resx",
-              "ToolTip": "D:\\apk1\\mauiapp1\\Properties\\Resources.resx",
-              "RelativeToolTip": "Properties\\Resources.resx",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001005|",
-              "WhenOpened": "2025-03-17T17:22:19.974Z",
+              "Title": "mauiapp1.csproj.bak",
+              "DocumentMoniker": "D:\\apk1\\mauiapp1\\mauiapp1.csproj.bak",
+              "RelativeDocumentMoniker": "mauiapp1.csproj.bak",
+              "ToolTip": "D:\\apk1\\mauiapp1\\mauiapp1.csproj.bak",
+              "RelativeToolTip": "mauiapp1.csproj.bak",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001001|",
+              "WhenOpened": "2025-03-18T16:00:17.169Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 1,
-              "Title": "DevicePopup.xaml.cs",
-              "DocumentMoniker": "D:\\apk1\\mauiapp1\\DevicePopup.xaml.cs",
-              "RelativeDocumentMoniker": "DevicePopup.xaml.cs",
-              "ToolTip": "D:\\apk1\\mauiapp1\\DevicePopup.xaml.cs",
-              "RelativeToolTip": "DevicePopup.xaml.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAA0AAABGAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-03-17T16:52:51.263Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 6,
+              "DocumentIndex": 7,
               "Title": "MainPage.xaml",
               "DocumentMoniker": "D:\\apk1\\mauiapp1\\MainPage.xaml",
               "RelativeDocumentMoniker": "MainPage.xaml",
@@ -98,7 +86,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 5,
+              "DocumentIndex": 6,
               "Title": "DevicePopup.xaml",
               "DocumentMoniker": "D:\\apk1\\mauiapp1\\DevicePopup.xaml",
               "RelativeDocumentMoniker": "DevicePopup.xaml",
@@ -110,7 +98,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 0,
+              "DocumentIndex": 1,
               "Title": "dotnet.txt",
               "DocumentMoniker": "D:\\apk1\\mauiapp1\\dotnet.txt",
               "RelativeDocumentMoniker": "dotnet.txt",
@@ -123,7 +111,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 8,
+              "DocumentIndex": 9,
               "Title": "Microsoft.NET.Sdk.FrameworkReferenceResolution.targets",
               "DocumentMoniker": "C:\\Program Files\\dotnet\\sdk\\9.0.200\\Sdks\\Microsoft.NET.Sdk\\targets\\Microsoft.NET.Sdk.FrameworkReferenceResolution.targets",
               "ToolTip": "C:\\Program Files\\dotnet\\sdk\\9.0.200\\Sdks\\Microsoft.NET.Sdk\\targets\\Microsoft.NET.Sdk.FrameworkReferenceResolution.targets",
@@ -133,7 +121,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 4,
+              "DocumentIndex": 5,
               "Title": "Recents.xaml.cs",
               "DocumentMoniker": "D:\\apk1\\mauiapp1\\Recents.xaml.cs",
               "RelativeDocumentMoniker": "Recents.xaml.cs",
@@ -141,36 +129,60 @@
               "RelativeToolTip": "Recents.xaml.cs",
               "ViewState": "AgIAACQAAAAAAAAAAAAAADIAAAANAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-03-16T16:23:30.767Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-03-16T16:23:30.767Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 3,
+              "DocumentIndex": 0,
               "Title": "MainPage.xaml.cs",
               "DocumentMoniker": "D:\\apk1\\mauiapp1\\MainPage.xaml.cs",
               "RelativeDocumentMoniker": "MainPage.xaml.cs",
               "ToolTip": "D:\\apk1\\mauiapp1\\MainPage.xaml.cs",
               "RelativeToolTip": "MainPage.xaml.cs",
-              "ViewState": "AgIAADMAAAAAAAAAAAAAAEAAAAA8AAAAAAAAAA==",
+              "ViewState": "AgIAAC0AAAAAAAAAAAAcwD4AAABuAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2025-01-28T16:09:01.421Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 9,
+              "DocumentIndex": 3,
+              "Title": "DevicePopup.xaml.cs",
+              "DocumentMoniker": "D:\\apk1\\mauiapp1\\DevicePopup.xaml.cs",
+              "RelativeDocumentMoniker": "DevicePopup.xaml.cs",
+              "ToolTip": "D:\\apk1\\mauiapp1\\DevicePopup.xaml.cs",
+              "RelativeToolTip": "DevicePopup.xaml.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAA0AAABGAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-03-17T16:52:51.263Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 4,
+              "Title": "Resources.resx",
+              "DocumentMoniker": "D:\\apk1\\mauiapp1\\Properties\\Resources.resx",
+              "RelativeDocumentMoniker": "Properties\\Resources.resx",
+              "ToolTip": "D:\\apk1\\mauiapp1\\Properties\\Resources.resx",
+              "RelativeToolTip": "Properties\\Resources.resx",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001005|",
+              "WhenOpened": "2025-03-17T17:22:19.974Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 10,
               "Title": "mauiapp1",
               "DocumentMoniker": "D:\\apk1\\mauiapp1\\mauiapp1.csproj",
               "RelativeDocumentMoniker": "mauiapp1.csproj",
               "ToolTip": "D:\\apk1\\mauiapp1\\mauiapp1.csproj",
               "RelativeToolTip": "mauiapp1.csproj",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000758|",
-              "WhenOpened": "2025-03-17T15:15:52.171Z"
+              "WhenOpened": "2025-03-17T15:15:52.171Z",
+              "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 7,
+              "DocumentIndex": 8,
               "Title": "Preferences.xaml.cs",
               "DocumentMoniker": "D:\\apk1\\mauiapp1\\Preferences.xaml.cs",
               "RelativeDocumentMoniker": "Preferences.xaml.cs",
@@ -179,6 +191,10 @@
               "ViewState": "AgIAAAAAAAAAAAAAAAAAAKsAAABbAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2025-02-16T13:10:04.353Z"
+            },
+            {
+              "$type": "Bookmark",
+              "Name": "ST:0:0:{e5c86464-96be-4d7c-9a8b-abcb3bbf5f92}"
             }
           ]
         },

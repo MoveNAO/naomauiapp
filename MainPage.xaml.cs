@@ -1,11 +1,5 @@
 ﻿using Camera.MAUI;
-using Microsoft.Maui;
-using Microsoft.Maui.Devices;
-using Microsoft.Maui.LifecycleEvents;
-using Microsoft.Maui.Storage;
 using System.Globalization;
-using System.Threading;
-using System.IO;
 using System.Text.Json;
 using static mauiapp1.Preferences;
 
@@ -20,12 +14,21 @@ namespace mauiapp1
     {
         string? flaskServerIP = AppPreferences.ipaddr;
         string flaskServerPort = "5000";
+        private bool _disposed;
+        public CameraInfo selectedCamera;
         private List<CameraInfo> availableCameras = new List<CameraInfo>(); //elenca le fotocamere disponibili 
         public MainPage()
         {
             InitializeComponent();
             SetAppLanguage();
-            cameraView.CamerasLoaded += CameraView_CamerasLoaded;
+            try
+            {
+                cameraView.CamerasLoaded += CameraView_CamerasLoaded;
+            }
+            catch (Exception)
+            {
+
+            }
             if (DeviceInfo.Platform == DevicePlatform.Android)
             {
                 //goloso codice specifico per android
@@ -39,25 +42,33 @@ namespace mauiapp1
 
         protected async override void OnAppearing()
         {
-            //la pagina ha problemi di reload quando è cambiata da android. così la pagina viene ricaricata forzatamente.
             base.OnAppearing();
-            cameraPicker.Title = Properties.Resources.SetCamera;
-            CounterBtn.Text = Properties.Resources.TakeAPicture;
-            loadinglabel.Text = Properties.Resources.Loading;
-            var temp = BindingContext;
-            BindingContext = null;
-            BindingContext = temp;
-            cameraView.CamerasLoaded += CameraView_CamerasLoaded;
-            if (DeviceInfo.Platform == DevicePlatform.Android)
+            try
             {
-                //goloso codice specifico per android
-                cameraPicker.IsVisible = true;
+                //la pagina ha problemi di reload quando è cambiata da android. così la pagina viene ricaricata forzatamente.
+                cameraPicker.Title = Properties.Resources.SetCamera;
+                CounterBtn.Text = Properties.Resources.TakeAPicture;
+                loadinglabel.Text = Properties.Resources.Loading;
+                var temp = BindingContext;
+                BindingContext = null;
+                BindingContext = temp;
+                cameraView.CamerasLoaded -= CameraView_CamerasLoaded; //forse non detona se prima disattiviamo
+                cameraView.CamerasLoaded += CameraView_CamerasLoaded;
+                if (DeviceInfo.Platform == DevicePlatform.Android)
+                {
+                    //goloso codice specifico per android
+                    cameraPicker.IsVisible = true;
+                }
+                else
+                {
+                    cameraPicker.IsVisible = false;
+                }
+                await cameraView.StartCameraAsync();
             }
-            else
+            catch (Exception)
             {
-                cameraPicker.IsVisible = false;
+                
             }
-            await cameraView.StartCameraAsync();
         }
 
         private void SetAppLanguage()
@@ -69,29 +80,40 @@ namespace mauiapp1
 
         private async void CameraView_CamerasLoaded(object? sender, EventArgs e)
         {
-            var status = await Permissions.RequestAsync<Permissions.Camera>();
-            if (status != PermissionStatus.Granted)
+            try
             {
-                await DisplayAlert(mauiapp1.Properties.Resources.PermissionDenied, Properties.Resources.CameraAccessIsRequiredToTakePictures, Properties.Resources.OK);
-                return;
-            }
+                var status = await Permissions.RequestAsync<Permissions.Camera>();
+                if (status != PermissionStatus.Granted)
+                {
+                    await DisplayAlert(mauiapp1.Properties.Resources.PermissionDenied, Properties.Resources.CameraAccessIsRequiredToTakePictures, Properties.Resources.OK);
+                    return;
+                }
+                if (cameraView?.Cameras == null)
+                {
+                    await DisplayAlert(Properties.Resources.Error, "Camera initialization failed", Properties.Resources.OK);
+                    return;
+                }
+                availableCameras.Clear();
+                availableCameras = cameraView.Cameras
+                    .GroupBy(c => c.Name)
+                    .Select(g => g.First())
+                    .ToList();
 
-            availableCameras.Clear();
-            availableCameras = cameraView.Cameras
-                .GroupBy(c => c.Name)
-                .Select(g => g.First())
-                .ToList();
-
-            if (availableCameras.Count > 0)
-            {
-                cameraPicker.ItemsSource = availableCameras.Select(c => c.Name).ToList();
-                cameraPicker.SelectedIndexChanged += CameraPicker_SelectedIndexChanged;
-                cameraView.Camera = availableCameras.First();
-                await cameraView.StartCameraAsync();
+                if (availableCameras.Count > 0)
+                {
+                    cameraPicker.ItemsSource = availableCameras.Select(c => c.Name).ToList();
+                    cameraPicker.SelectedIndexChanged += CameraPicker_SelectedIndexChanged;
+                    cameraView.Camera = availableCameras.First();
+                    await cameraView.StartCameraAsync();
+                }
+                else
+                {
+                    await DisplayAlert(Properties.Resources.Error, Properties.Resources.NoCamerasFound, Properties.Resources.OK);
+                }
             }
-            else
+            catch (Exception ex)
             {
-                await DisplayAlert(Properties.Resources.Error, Properties.Resources.NoCamerasFound, Properties.Resources.OK);
+                await DisplayAlert(Properties.Resources.Error, $"Camera initialization error: {ex.Message}", Properties.Resources.OK);
             }
         }
 
@@ -112,7 +134,7 @@ namespace mauiapp1
                             cameraPosition = CameraPosition.Back;
                         }
                         var cameras = cameraView.Cameras;
-                        var selectedCamera = cameras.FirstOrDefault(c => c.Position == cameraPosition);
+                        selectedCamera = cameras.FirstOrDefault(c => c.Position == cameraPosition);
                         if (selectedCamera != null)
                         {
                             cameraView.Camera = selectedCamera;
@@ -321,6 +343,19 @@ namespace mauiapp1
                 scannedObjects.Add(scannedObject);
                 string scannedObjectJSONString = JsonSerializer.Serialize(scannedObjects, new JsonSerializerOptions { WriteIndented = true });
                 File.WriteAllText(filename, scannedObjectJSONString);
+            }
+        }
+        protected override void OnDisappearing()
+        {
+            //forse così
+            base.OnDisappearing();
+            try
+            {
+                cameraView.StopCameraAsync();
+                cameraView.CamerasLoaded -= CameraView_CamerasLoaded;
+            }
+            catch (Exception)
+            {
             }
         }
     }
