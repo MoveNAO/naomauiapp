@@ -10,7 +10,7 @@
 		<ImplicitUsings>enable</ImplicitUsings>
 		<Nullable>enable</Nullable>
 		<AndroidEnableNETExperimental>false</AndroidEnableNETExperimental>
-		<!-- <WindowsPackageType>None</WindowsPackageType> -->
+		<WindowsPackageType>None</WindowsPackageType>
 		<ApplicationTitle>mauiapp1</ApplicationTitle>
 		<ApplicationId>com.NAO.NAO</ApplicationId>
 		<ApplicationDisplayVersion>1.0</ApplicationDisplayVersion>
@@ -138,7 +138,7 @@
 		<!-- <MauiIcon Include="Resources\AppIcon\appicon.svg" /> -->
 
 		<!-- Splash Screen -->
-		<!-- <MauiSplashScreen Include="Resources\Splash\splash.svg" Color="#512BD4" BaseSize="128,128" /> -->
+		<MauiSplashScreen Include="Resources\Splash\splash.svg" Color="#512BD4" BaseSize="128,128" />
 
 		<!-- Images -->
 		<MauiImage Include="Resources\Images\*" />
@@ -177,6 +177,9 @@
 
 	<ItemGroup>
 	  <MauiXaml Update="DevicePopup.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
+	  <MauiXaml Update="Home.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
 	  <MauiXaml Update="Popups\Loading\LoadingPopup.xaml">

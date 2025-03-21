@@ -10,6 +10,10 @@
     <TabBar>
         <ShellContent
             Title="Home"
+            ContentTemplate="{DataTemplate local:Home}"
+            Icon="icon_home" />
+        <ShellContent
+            Title="Camera"
             ContentTemplate="{DataTemplate local:MainPage}"
             Icon="icon_home" />
         <ShellContent

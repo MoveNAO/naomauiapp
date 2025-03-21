@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="mauiapp1.Home">
+
+    <ScrollView>
+        <VerticalStackLayout Padding="16">
+            <Image Source="logomagiusto.png"
+                   HeightRequest="128" />
+
+            <Label Text="MoveNAO"
+                   FontSize="21"
+                   FontAttributes="Bold"
+                   TextColor="#FF10F7E9"
+                   HorizontalOptions="Center"
+                   Margin="0,10,0,25" />
+
+            <Label Text="L'app ti permette di scattare una foto ad un attrezzo ginnico, e di consigliarti workout personalizzati, e di mostrarli grazie a NAO. Inoltre, tiene traccia delle tue statistiche ......"
+                   FontSize="23"
+                   LineBreakMode="WordWrap"
+                   HorizontalTextAlignment="Center" />
+
+            <Label Text="Non si tratta di essere i migliori, ma di essere migliori di ieri. Entra, allenati, supera i tuoi limiti!"
+                   FontSize="20"
+                   FontAttributes="Italic"
+                   HorizontalOptions="Center"
+                   LineBreakMode="WordWrap"
+                   Margin="0,50,0,0" />
+        </VerticalStackLayout>
+    </ScrollView>
+
+</ContentPage>
