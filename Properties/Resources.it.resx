@@ -189,4 +189,7 @@
   <data name="DeviceSelection" xml:space="preserve">
     <value>Seleziona un Dispositivo:</value>
   </data>
+  <data name="quote" xml:space="preserve">
+    <value>Non si tratta di essere i migliori, ma di essere migliori di ieri. Entra, allenati, supera i tuoi limiti!</value>
+  </data>
 </root>

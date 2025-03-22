@@ -33,15 +33,7 @@ public partial class Recents : ContentPage
     public static async Task<List<ScannedObject>>? GetScannedObjectsAsync() 
     {
         string tempPath = System.IO.Path.GetTempPath();
-        string filepath;
-        if(DeviceInfo.Platform == DevicePlatform.Android)
-        {
-            filepath = tempPath + "/scannedobjects.json"; //questo su android
-        }
-        else
-        {
-            filepath = tempPath + "\\scannedobjects.json"; //questo path funzionerà su win
-        }
+        string filepath = Path.Combine(tempPath + "scannedobjects.json");
         try
         {
             using var stream = new FileStream(filepath, FileMode.Open);

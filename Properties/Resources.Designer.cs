@@ -214,6 +214,15 @@ namespace mauiapp1.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to It&apos;s not about being the best, but about being better than yesterday. Come in, train, overcome your limits!.
+        /// </summary>
+        internal static string quote {
+            get {
+                return ResourceManager.GetString("quote", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Selected Camera: .
         /// </summary>
         internal static string SelectedCamera {

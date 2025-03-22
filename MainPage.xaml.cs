@@ -63,7 +63,7 @@ namespace mauiapp1
                 {
                     cameraPicker.IsVisible = false;
                 }
-                await cameraView.StartCameraAsync();
+                await cameraView.StartCameraAsync().ConfigureAwait(true);
             }
             catch (Exception)
             {
@@ -82,15 +82,19 @@ namespace mauiapp1
         {
             try
             {
-                var status = await Permissions.RequestAsync<Permissions.Camera>();
+                var status = await Permissions.RequestAsync<Permissions.Camera>().ConfigureAwait(true);
                 if (status != PermissionStatus.Granted)
                 {
-                    await DisplayAlert(mauiapp1.Properties.Resources.PermissionDenied, Properties.Resources.CameraAccessIsRequiredToTakePictures, Properties.Resources.OK);
+                    await DisplayAlert(mauiapp1.Properties.Resources.PermissionDenied, 
+                              Properties.Resources.CameraAccessIsRequiredToTakePictures, 
+                              Properties.Resources.OK).ConfigureAwait(true);
                     return;
                 }
                 if (cameraView?.Cameras == null)
                 {
-                    await DisplayAlert(Properties.Resources.Error, "Camera initialization failed", Properties.Resources.OK);
+                    await DisplayAlert(Properties.Resources.Error, 
+                              "Camera initialization failed", 
+                              Properties.Resources.OK).ConfigureAwait(true);
                     return;
                 }
                 availableCameras.Clear();
@@ -104,16 +108,20 @@ namespace mauiapp1
                     cameraPicker.ItemsSource = availableCameras.Select(c => c.Name).ToList();
                     cameraPicker.SelectedIndexChanged += CameraPicker_SelectedIndexChanged;
                     cameraView.Camera = availableCameras.First();
-                    await cameraView.StartCameraAsync();
+                    await cameraView.StartCameraAsync().ConfigureAwait(true);
                 }
                 else
                 {
-                    await DisplayAlert(Properties.Resources.Error, Properties.Resources.NoCamerasFound, Properties.Resources.OK);
+                    await DisplayAlert(Properties.Resources.Error,
+                                Properties.Resources.NoCamerasFound,
+                                Properties.Resources.OK).ConfigureAwait(true);
                 }
             }
             catch (Exception ex)
             {
-                await DisplayAlert(Properties.Resources.Error, $"Camera initialization error: {ex.Message}", Properties.Resources.OK);
+                await DisplayAlert(Properties.Resources.Error, 
+                          $"Camera initialization error: {ex.Message}", 
+                          Properties.Resources.OK).ConfigureAwait(true);
             }
         }
 
@@ -138,14 +146,14 @@ namespace mauiapp1
                         if (selectedCamera != null)
                         {
                             cameraView.Camera = selectedCamera;
-                            await cameraView.StartCameraAsync();
+                            await cameraView.StartCameraAsync().ConfigureAwait(true);
                         }
                     }                    
                     else
                     {
                         await DisplayAlert(Properties.Resources.Error, 
                                   Properties.Resources.CameraNotFound, 
-                                  "OK");
+                                  "OK").ConfigureAwait(true);
                     }
                 }
                 catch (Exception ex)
@@ -153,7 +161,7 @@ namespace mauiapp1
                     string message = Properties.Resources.FailedToStartTheCamera;
                     await DisplayAlert(Properties.Resources.Error, 
                               message + ex.Message, 
-                              Properties.Resources.OK);
+                              Properties.Resources.OK).ConfigureAwait(true);
                 }
             }
         }
@@ -198,14 +206,14 @@ namespace mauiapp1
                     string imageresult = await response.Content.ReadAsStringAsync();
                     await DisplayAlert(Properties.Resources.UploadStatus, 
                               imageresult, 
-                              Properties.Resources.OK);
+                              Properties.Resources.OK).ConfigureAwait(true);
                 }
                 catch (Exception ex)
                 {
                     string exception = ex.ToString();
                     await DisplayAlert(Properties.Resources.UploadingError, 
                               exception, 
-                              Properties.Resources.OK);
+                              Properties.Resources.OK).ConfigureAwait(true);
                 }
             }
         }
@@ -235,18 +243,18 @@ namespace mauiapp1
                         {
                             LoadingOverlay.IsVisible = true;
                         });
-                        HttpResponseMessage caption = await client.GetAsync(downloadURL);
+                        HttpResponseMessage caption = await client.GetAsync(downloadURL).ConfigureAwait(true);
                         if (caption.IsSuccessStatusCode)
                         {
                             MainThread.BeginInvokeOnMainThread(() =>
                             {
                                 LoadingOverlay.IsVisible = false;
                             });
-                            string captioncontent = await caption.Content.ReadAsStringAsync();
+                            string captioncontent = await caption.Content.ReadAsStringAsync().ConfigureAwait(true);
                             string? readablecaptioncontent = MakeReadable(captioncontent);
                             await DisplayAlert(Properties.Resources.ImageCaption, 
                                       readablecaptioncontent ?? Properties.Resources.YourCaptionWasnTFound, 
-                                      Properties.Resources.OK);
+                                      Properties.Resources.OK).ConfigureAwait(true);
                             if (readablecaptioncontent != null)
                             {
                                 PrintToJSON(readablecaptioncontent);
@@ -254,7 +262,7 @@ namespace mauiapp1
                             return;
                         }
                         attempts++;
-                        await Task.Delay(delay);
+                        await Task.Delay(delay).ConfigureAwait(true);
                     }
                     MainThread.BeginInvokeOnMainThread(() =>
                     {
@@ -262,56 +270,62 @@ namespace mauiapp1
                     });
                     await DisplayAlert(Properties.Resources.Error, 
                               Properties.Resources.ImgCaptionNotFound, 
-                              Properties.Resources.OK);
+                              Properties.Resources.OK).ConfigureAwait(true);
                 }
                 catch (Exception ex)
                 {
                     string exception = ex.ToString();
                     await DisplayAlert(Properties.Resources.Error, 
                               exception, 
-                              Properties.Resources.OK);
+                              Properties.Resources.OK).ConfigureAwait(true);
                 }
             }
         }
         private async void TakePhoto(object sender, EventArgs e)
         {
-            var stream = await cameraView.TakePhotoAsync();
-            if (stream != null)
+            try
             {
-                string? flaskServerIP = AppPreferences.ipaddr;
-                if (!string.IsNullOrWhiteSpace(flaskServerIP) && ValidateIP(flaskServerIP))
+                var stream = await cameraView.TakePhotoAsync().ConfigureAwait(true);
+                if (stream != null)
                 {
-                    var result = ImageSource.FromStream(() => stream);
-                    string fileName = "photo.jpg";
-                    string filePath = Path.Combine(FileSystem.AppDataDirectory, fileName);
-                    using (var fileStream = File.Create(filePath))
+                    string? flaskServerIP = AppPreferences.ipaddr;
+                    if (!string.IsNullOrWhiteSpace(flaskServerIP) && ValidateIP(flaskServerIP))
                     {
-                        await stream.CopyToAsync(fileStream);
+                        var result = ImageSource.FromStream(() => stream);
+                        string fileName = "photo.jpg";
+                        string filePath = Path.Combine(FileSystem.AppDataDirectory, fileName);
+                        using (var fileStream = File.Create(filePath))
+                        {
+                            await stream.CopyToAsync(fileStream).ConfigureAwait(true);
+                        }
+                        using (HttpClient client = new HttpClient())
+                        {
+                            try
+                            {
+                                string uploadURL = $"http://{flaskServerIP}:{flaskServerPort}/upload";
+                                UploadPhoto(uploadURL, filePath, fileName);
+                                string downloadURL = $"http://{flaskServerIP}:{flaskServerPort}/download/caption.txt";
+                                DownloadCaption(downloadURL);
+                                string deleteURL = $"http://{flaskServerIP}:{flaskServerPort}/delete/caption";
+                                DeleteCaption(deleteURL);
+                            }
+                            catch (Exception ex)
+                            {
+                                string exception = ex.ToString();
+                                await DisplayAlert(Properties.Resources.Error, exception, Properties.Resources.OK).ConfigureAwait(true);
+                            }
+                        }
                     }
-                    using (HttpClient client = new HttpClient())
+                    else
                     {
-                        try
-                        {
-                            string uploadURL = $"http://{flaskServerIP}:{flaskServerPort}/upload";
-                            UploadPhoto(uploadURL, filePath, fileName);
-                            string downloadURL = $"http://{flaskServerIP}:{flaskServerPort}/download/caption.txt";
-                            DownloadCaption(downloadURL);
-                            string deleteURL = $"http://{flaskServerIP}:{flaskServerPort}/delete/caption";
-                            DeleteCaption(deleteURL);
-                        }
-                        catch (Exception ex)
-                        {
-                            string exception = ex.ToString();
-                            await DisplayAlert(Properties.Resources.Error, exception, Properties.Resources.OK);
-                        }
+                        await DisplayAlert("IP",
+                                  Properties.Resources.NullInvalidIP,
+                                  Properties.Resources.OK).ConfigureAwait(true);
                     }
                 }
-                else
-                {
-                    await DisplayAlert("IP", 
-                              Properties.Resources.NullInvalidIP, 
-                              Properties.Resources.OK);
-                }
+            }
+            catch (Exception)
+            {
             }
         }
         private void PrintToJSON(string caption)

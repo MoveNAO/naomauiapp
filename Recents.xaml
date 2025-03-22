@@ -3,7 +3,7 @@
              x:Class="mauiapp1.Recents"
              Title="Recents">
     <VerticalStackLayout>
-        <ListView x:Name="recentItemsListView">
+        <ListView x:Name="recentItemsListView" Margin="16,16,16,16">
             <ListView.ItemTemplate>
                 <DataTemplate>
                     <TextCell Text="{Binding analysedcaption}" 

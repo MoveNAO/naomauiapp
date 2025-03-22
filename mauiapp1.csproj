@@ -10,7 +10,7 @@
 		<ImplicitUsings>enable</ImplicitUsings>
 		<Nullable>enable</Nullable>
 		<AndroidEnableNETExperimental>false</AndroidEnableNETExperimental>
-		<WindowsPackageType>None</WindowsPackageType>
+		<!-- <WindowsPackageType>None</WindowsPackageType> -->
 		<ApplicationTitle>mauiapp1</ApplicationTitle>
 		<ApplicationId>com.NAO.NAO</ApplicationId>
 		<ApplicationDisplayVersion>1.0</ApplicationDisplayVersion>
@@ -134,11 +134,14 @@
 	</PropertyGroup>
 
 	<ItemGroup>
+		<MauiIcon Condition="$([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) == 'windows'"
+              	Include="Resources\AppIcon\windowslogo.png"/>
 		<!-- App Icon -->
 		<!-- <MauiIcon Include="Resources\AppIcon\appicon.svg" /> -->
 
 		<!-- Splash Screen -->
-		<MauiSplashScreen Include="Resources\Splash\splash.svg" Color="#512BD4" BaseSize="128,128" />
+		<MauiSplashScreen Condition="$([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) == 'windows'"
+				Include="Resources\Splash\splash.svg" Color="#512BD4" BaseSize="128,128" />
 
 		<!-- Images -->
 		<MauiImage Include="Resources\Images\*" />
