@@ -19,10 +19,14 @@ public partial class Home : ContentPage
         //codice per bicchieri
         if (sender is Image image && e.Parameter is string glassId)
         {
-           bool isFull = image.Source.ToString().Contains("bicchierepieno.png");
-           filledGlasses[glassId] = !isFull;
-           image.Source = !isFull ? "bicchierepieno.png" : "bicchierevuoto.png";
-           await SaveGlassStatus();
+            if(image != null && image.Source != null)
+            {
+                string? sourceString = image.Source.ToString(); //mi dava rogne altrimenti
+                bool isFull = sourceString?.Contains("bicchierepieno.png") ?? false;
+                filledGlasses[glassId] = !isFull;
+                image.Source = !isFull ? "bicchierepieno.png" : "bicchierevuoto.png";
+                await SaveGlassStatus();
+            }
         }
     }
     private async Task SaveGlassStatus()
@@ -51,7 +55,7 @@ public partial class Home : ContentPage
                 foreach (var glass in filledGlasses)
                 {
                     string glassName = "Glass" + glass.Key;
-                    Image image = FindByName(glassName) as Image; 
+                    Image? image = FindByName(glassName) as Image; 
                     if (image != null)
                     {
                         image.Source = glass.Value ? "bicchierepieno.png" : "bicchierevuoto.png";

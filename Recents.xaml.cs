@@ -18,8 +18,10 @@ public partial class Recents : ContentPage
 	}
 
     private async void LoadItems() {
-        var recentItems = await GetScannedObjectsAsync();
-        if(recentItems != null && recentItems.Any())
+#pragma warning disable CS8602 // Dereference of a possibly null reference.
+        List<ScannedObject>? recentItems = await GetScannedObjectsAsync(); //dai non rompere
+#pragma warning restore CS8602 // Dereference of a possibly null reference.
+        if (recentItems != null && recentItems.Any())
         {
             recentItemsListView.ItemsSource = recentItems;
         }
@@ -30,7 +32,7 @@ public partial class Recents : ContentPage
             the_nothingness.IsVisible = true;
         }
     }
-    public static async Task<List<ScannedObject>>? GetScannedObjectsAsync() 
+    public static async Task<List<ScannedObject>?>? GetScannedObjectsAsync() 
     {
         string tempPath = System.IO.Path.GetTempPath();
         string filepath = Path.Combine(tempPath + "scannedobjects.json");
@@ -39,7 +41,7 @@ public partial class Recents : ContentPage
             using var stream = new FileStream(filepath, FileMode.Open);
             using var reader = new StreamReader(stream);
             var json = await reader.ReadToEndAsync();
-            if (json != null)
+            if (!string.IsNullOrEmpty(json))
             {
                 return JsonSerializer.Deserialize<List<ScannedObject>>(json);
             }

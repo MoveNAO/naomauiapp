@@ -159,10 +159,13 @@ public partial class Preferences : ContentPage
                     var popup = new DevicePopup(foundIps);
                     MainThread.BeginInvokeOnMainThread(() =>
                     {
-                        var window = Application.Current.Windows.FirstOrDefault();
-                        if (window != null)
+                        if(Application.Current != null) //compilatore come cavolo fai a pensare che questo possa essere nullo? "dereference of a possibly null reference", ma se l'applicazione corrente è nulla cosa diamine staresti facendo con il tuo computer?
                         {
-                            window.Page.Navigation.PushModalAsync(popup);
+                            Window? window = Application.Current.Windows.Count > 0 ? Application.Current.Windows[0] : null;
+                            if (window != null && window.Page != null)
+                            {
+                                window.Page.Navigation.PushModalAsync(popup);
+                            }
                         }
                     });
                 });

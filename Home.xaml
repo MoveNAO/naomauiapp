@@ -31,6 +31,11 @@
                    LineBreakMode="WordWrap"
                    Margin="0,50,0,0" />
 
+            <Label Text="Hai già bevuto acqua oggi?"
+                   FontSize="18"
+                   LineBreakMode="WordWrap"
+                   Margin="0,50,0,0" />
+
             <Grid ColumnDefinitions="*,*,*,*,*,*,*"
                   HorizontalOptions="Center">
                 <Image x:Name="Glass1" Source="bicchierevuoto.png" HeightRequest="64" Grid.Column="0">

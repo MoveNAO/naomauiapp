@@ -15,7 +15,7 @@ namespace mauiapp1
         string? flaskServerIP = AppPreferences.ipaddr;
         string flaskServerPort = "5000";
         private bool _disposed;
-        public CameraInfo selectedCamera;
+        public CameraInfo? selectedCamera;
         private List<CameraInfo> availableCameras = new List<CameraInfo>(); //elenca le fotocamere disponibili 
         public MainPage()
         {
