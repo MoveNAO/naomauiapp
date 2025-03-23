@@ -11,13 +11,13 @@
         </Grid.RowDefinitions>
 
         <VerticalStackLayout Grid.Row="0" Margin="16">
-            <Label Text="Insert your IP"/>
+            <Label x:Name="insertIP"/>
             <Entry
                 x:Name="entry"
                 Placeholder="IP Address"
                 TextChanged="Entry_TextChanged"/>
             <Button
-                Text="Set."
+                x:Name="setButton"
                 Clicked="Button_Clicked"/>
         </VerticalStackLayout>
         <Grid x:Name="LoadingOverlay" IsVisible="false"
@@ -31,7 +31,7 @@
         </Grid>
         <Button
             Grid.Row="2" 
-            Text="Find IPs."
+            x:Name="findIPs"
             Margin="16"
             Clicked="Button_Clicked_1" />
     </Grid>

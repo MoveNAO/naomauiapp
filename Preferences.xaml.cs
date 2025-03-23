@@ -1,4 +1,5 @@
 using Controls.UserDialogs.Maui;
+using System.Globalization;
 using System.Net;
 using System.Net.NetworkInformation;
 using System.Net.Sockets;
@@ -12,10 +13,23 @@ public partial class Preferences : ContentPage
     public Preferences()
     {
         InitializeComponent();
+        SetAppLanguage();
     }
     public static class AppPreferences
     {
         public static string? ipaddr { get; set; }
+    }
+    private void SetAppLanguage()
+    {
+        var deviceLanguage = CultureInfo.CurrentCulture;
+        Thread.CurrentThread.CurrentCulture = deviceLanguage;
+        Thread.CurrentThread.CurrentUICulture = deviceLanguage;
+    }
+    protected override void OnAppearing()
+    {
+        insertIP.Text = mauiapp1.Properties.Resources2.InsertYourIP;
+        setButton.Text = mauiapp1.Properties.Resources2.SetButton;
+        findIPs.Text = mauiapp1.Properties.Resources2.FindIPs;
     }
     public void Entry_TextChanged(object sender, TextChangedEventArgs e)
     {

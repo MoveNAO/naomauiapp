@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Globalization;
 using System.IO;
 using System.Text.Json;
 using System.Threading.Tasks;
@@ -16,6 +17,17 @@ public partial class Recents : ContentPage
 		InitializeComponent();
         LoadItems();
 	}
+
+    private void SetAppLanguage()
+    {
+        var deviceLanguage = CultureInfo.CurrentCulture;
+        Thread.CurrentThread.CurrentCulture = deviceLanguage;
+        Thread.CurrentThread.CurrentUICulture = deviceLanguage;
+    }
+    protected override void OnAppearing()
+    {
+        the_nothingness.Text = mauiapp1.Properties.Resources3.Nothingness;
+    }
 
     private async void LoadItems() {
 #pragma warning disable CS8602 // Dereference of a possibly null reference.

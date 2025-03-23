@@ -12,7 +12,6 @@
             </ListView.ItemTemplate>
         </ListView>
         <Label x:Name="the_nothingness"
-               Text="Nothing is here. Run some scans and you'll see them here."
                IsVisible="false" />
     </VerticalStackLayout>
 </ContentPage>

@@ -4,7 +4,7 @@
              x:Class="mauiapp1.DevicePopup"
              Title="Select Device">
     <VerticalStackLayout Margin="16">
-        <Label x:Name="deviceselector" Text="Select a device:" FontSize="Medium"/>
+        <Label x:Name="deviceselector" FontSize="Medium"/>
         <CollectionView x:Name="DeviceCollectionView" SelectionMode="Single" SelectionChanged="DeviceCollectionView_SelectionChanged">
             <CollectionView.ItemTemplate>
                 <DataTemplate>
