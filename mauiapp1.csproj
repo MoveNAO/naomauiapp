@@ -232,4 +232,7 @@
     <AndroidResource Include="Resources\mipmap\mipmap-xhdpi\appicon.png" />
     <AndroidResource Include="Resources\mipmap\mipmap-xxhdpi\appicon.png" />
 </ItemGroup>
+<ItemGroup>
+    <EmbeddedResource Include="cportscanner\windows\portscanner.exe" />
+</ItemGroup>
 </Project>

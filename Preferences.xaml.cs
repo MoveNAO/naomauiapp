@@ -1,4 +1,5 @@
 using Controls.UserDialogs.Maui;
+using System.Diagnostics;
 using System.Globalization;
 using System.Net;
 using System.Net.NetworkInformation;
@@ -47,47 +48,6 @@ public partial class Preferences : ContentPage
             DisplayAlert(Properties.Resources.Error, Properties.Resources.IpNull, Properties.Resources.OK);
         }
     }
-    public class PortScanner
-    {
-        private SemaphoreSlim _semaphore = new SemaphoreSlim(150); //numero di connessioni contemporanee. stai attento.
-        private List<string> _foundIPs = new List<string>();
-        public async Task ScanPort(string ip, int port, ContentPage page)
-        {
-            await _semaphore.WaitAsync();
-            try
-            {
-                using TcpClient client = new TcpClient();
-                try
-                {
-                    await client.ConnectAsync(ip, port);
-                    _foundIPs.Add(ip);
-                }
-                catch
-                {
-                    //cos� il codice va avanti e non si blocca quando ha trovato un errore. qualcuno mi dica che non si fa cos�, vi prego.
-                }
-            }
-            finally
-            {
-                _semaphore.Release();
-            }
-        }
-
-        public List<string> RetrieveFoundIPs() => _foundIPs; //ma "retreive" o "retrieve" come si scrive?
-
-        public async Task ScanNetwork(string subnet, ContentPage page)
-        {
-            List<Task> scanTasks = new List<Task>();
-
-            for (int i = 1; i < 255; i++)
-            {
-                string ip = $"{subnet}.{i}";
-                scanTasks.Add(ScanPort(ip, 5000, page));
-            }
-            await Task.WhenAll(scanTasks); //carino lui. aspetta che tutto abbia finito... 
-        }
-    }
-
     private static string? GetCurrentIP()
     {
         string localIP;
@@ -145,9 +105,38 @@ public partial class Preferences : ContentPage
         return subnet.EndsWith(".0") ? subnet.Substring(0, subnet.LastIndexOf(".")) : subnet;
     }
 
+    private async Task<List<string>> ScanDevices(string subnet)
+    {
+        List<string> foundIps = new List<string>();
+
+        var processInfo = new ProcessStartInfo
+        {
+            FileName = "portscanner.exe",
+            Arguments = subnet,
+            RedirectStandardOutput = true,
+            UseShellExecute = false,
+            CreateNoWindow = true
+        };
+
+        using (var process = new Process { StartInfo = processInfo })
+        {
+            process.Start();
+
+            string output = await process.StandardOutput.ReadToEndAsync();
+            process.WaitForExit();
+
+            foundIps = output
+                .Split(new[] { '\n', '\r' }, StringSplitOptions.RemoveEmptyEntries)
+                .Where(line => line.Contains('.'))
+                .ToList();
+        }
+
+        return foundIps;
+    }
+
+
     private async void Button_Clicked_1(object sender, EventArgs e)
     {
-        PortScanner portScanner = new PortScanner();
         string? yourIP = GetCurrentIP();
         if (yourIP != null)
         {
@@ -155,25 +144,83 @@ public partial class Preferences : ContentPage
             if (subnetMask != null)
             {
                 string yourSubnet = GetCurrentSubnet(yourIP, subnetMask);
-                string yourSubnetnozero = GetSubnetWithoutZero(yourSubnet);
+                string yourSubnetNoZero = GetSubnetWithoutZero(yourSubnet);
                 await Task.Run(async () =>
                 {
                     MainThread.BeginInvokeOnMainThread(() =>
                     {
                         LoadingOverlay.IsVisible = true;
                     });
+                    List<string> foundIps = new List<string>();
 
-                    await portScanner.ScanNetwork(yourSubnetnozero, this);
+                    string tempPath = Path.Combine(Path.GetTempPath(), "portscanner.exe");
+
+                    try
+                    {
+                        try
+                        {
+                            var assembly = System.Reflection.Assembly.GetExecutingAssembly();
+                            string resourceName = "mauiapp1.cportscanner.windows.portscanner.exe";
+
+                            using (Stream resourceStream = assembly.GetManifestResourceStream(resourceName))
+                            using (FileStream fileStream = new FileStream(tempPath, FileMode.Create))
+                            {
+                                if (resourceStream == null)
+                                {
+                                    Console.WriteLine($"Resource not found: {resourceName}");
+                                    Console.WriteLine("Available resources:");
+                                    foreach (var res in assembly.GetManifestResourceNames())
+                                    {
+                                        Console.WriteLine($" - {res}");
+                                    }
+                                    return;
+                                }
+                                resourceStream.CopyTo(fileStream);
+                            }
+                        }
+                        catch (Exception ex)
+                        {
+                            Console.WriteLine($"Error extracting resource: {ex.Message}");
+                            return;
+                        }
+
+                        var processInfo = new ProcessStartInfo
+                        {
+                            FileName = tempPath,
+                            Arguments = yourSubnetNoZero,
+                            RedirectStandardOutput = true,
+                            UseShellExecute = false,
+                            CreateNoWindow = true
+                        };
+
+                        using (var process = new Process { StartInfo = processInfo })
+                        {
+                            process.Start();
+
+                            string output = await process.StandardOutput.ReadToEndAsync();
+                            process.WaitForExit();
+
+                            foundIps = output
+                                .Split(new[] { '\n', '\r' }, StringSplitOptions.RemoveEmptyEntries)
+                                .Where(line => line.Contains('.'))
+                                .ToList();
+                        }
+                    }
+                    catch (Exception ex)
+                    {
+                        Console.WriteLine($"Error running scanner: {ex.Message}");
+                        MainThread.BeginInvokeOnMainThread(() =>
+                        {
+                            DisplayAlert("ciao", ex.Message as string, "Ok");
+                        });
+                    }
 
                     MainThread.BeginInvokeOnMainThread(() =>
                     {
                         LoadingOverlay.IsVisible = false;
-                    });
-                    List<string> foundIps = portScanner.RetrieveFoundIPs();
-                    var popup = new DevicePopup(foundIps);
-                    MainThread.BeginInvokeOnMainThread(() =>
-                    {
-                        if(Application.Current != null) //compilatore come cavolo fai a pensare che questo possa essere nullo? "dereference of a possibly null reference", ma se l'applicazione corrente è nulla cosa diamine staresti facendo con il tuo computer?
+
+                        var popup = new DevicePopup(foundIps);
+                        if (Application.Current != null)
                         {
                             Window? window = Application.Current.Windows.Count > 0 ? Application.Current.Windows[0] : null;
                             if (window != null && window.Page != null)
@@ -186,7 +233,12 @@ public partial class Preferences : ContentPage
             }
             else
             {
-                await DisplayAlert(Properties.Resources.Error, Properties.Resources.Offline, Properties.Resources.OK);
+                await DisplayAlert("Error", "Unable to retrieve subnet mask.", "OK");
             }
         }
-    } }
+        else
+        {
+            await DisplayAlert("Error", "Unable to retrieve your IP address.", "OK");
+        }
+    }
+} 

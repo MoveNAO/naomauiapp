@@ -10,19 +10,15 @@
     <TabBar>
         <ShellContent
             Title="Home"
-            ContentTemplate="{DataTemplate local:Home}"
-            Icon="icon_home" />
+            ContentTemplate="{DataTemplate local:Home}" />
         <ShellContent
             Title="Camera"
-            ContentTemplate="{DataTemplate local:MainPage}"
-            Icon="icon_home" />
+            ContentTemplate="{DataTemplate local:MainPage}" />
         <ShellContent
             Title="Preferences"
-            ContentTemplate="{DataTemplate local:Preferences}"
-            Icon="icon_prefs" />
+            ContentTemplate="{DataTemplate local:Preferences}" />
         <ShellContent
             Title="Recents"
-            ContentTemplate="{DataTemplate local:Recents}"
-            Icon="icon_recents" />
+            ContentTemplate="{DataTemplate local:Recents}" />
     </TabBar>
 </Shell>
