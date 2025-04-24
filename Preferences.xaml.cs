@@ -1,10 +1,12 @@
 using Controls.UserDialogs.Maui;
+using System.Collections.Concurrent;
 using System.Diagnostics;
 using System.Globalization;
 using System.Net;
 using System.Net.NetworkInformation;
 using System.Net.Sockets;
 using System.Runtime.CompilerServices;
+using System.Text;
 
 namespace mauiapp1;
 
@@ -134,6 +136,30 @@ public partial class Preferences : ContentPage
         return foundIps;
     }
 
+    private async Task<string> ScanSingleIpAsync(string ip, int port, CancellationToken cancellationToken)
+    {
+        try
+        {
+            using (var tcpClient = new TcpClient())
+            {
+                var connectTask = tcpClient.ConnectAsync(ip, port);
+                var timeoutTask = Task.Delay(200, cancellationToken);
+
+                var completedTask = await Task.WhenAny(connectTask, timeoutTask);
+
+                if (completedTask == connectTask && tcpClient.Connected)
+                {
+                    return ip;
+                }
+            }
+        }
+        catch
+        {
+            
+        }
+
+        return string.Empty;
+    }
 
     private async void Button_Clicked_1(object sender, EventArgs e)
     {
@@ -145,91 +171,141 @@ public partial class Preferences : ContentPage
             {
                 string yourSubnet = GetCurrentSubnet(yourIP, subnetMask);
                 string yourSubnetNoZero = GetSubnetWithoutZero(yourSubnet);
-                await Task.Run(async () =>
+                if(DeviceInfo.Platform == DevicePlatform.WinUI)
                 {
-                    MainThread.BeginInvokeOnMainThread(() =>
+                    await Task.Run(async () =>
                     {
-                        LoadingOverlay.IsVisible = true;
-                    });
-                    List<string> foundIps = new List<string>();
+                        MainThread.BeginInvokeOnMainThread(() =>
+                        {
+                            LoadingOverlay.IsVisible = true;
+                        });
+                        List<string> foundIps = new List<string>();
 
-                    string tempPath = Path.Combine(Path.GetTempPath(), "portscanner.exe");
+                        string tempPath = Path.Combine(Path.GetTempPath(), "portscanner.exe");
 
-                    try
-                    {
                         try
                         {
-                            var assembly = System.Reflection.Assembly.GetExecutingAssembly();
-                            string resourceName = "mauiapp1.cportscanner.windows.portscanner.exe";
-
-                            using (Stream resourceStream = assembly.GetManifestResourceStream(resourceName))
-                            using (FileStream fileStream = new FileStream(tempPath, FileMode.Create))
+                            try
                             {
-                                if (resourceStream == null)
+                                var assembly = System.Reflection.Assembly.GetExecutingAssembly();
+                                string resourceName = "mauiapp1.cportscanner.windows.portscanner.exe";
+
+                                using (Stream resourceStream = assembly.GetManifestResourceStream(resourceName))
+                                using (FileStream fileStream = new FileStream(tempPath, FileMode.Create))
                                 {
-                                    Console.WriteLine($"Resource not found: {resourceName}");
-                                    Console.WriteLine("Available resources:");
-                                    foreach (var res in assembly.GetManifestResourceNames())
+                                    if (resourceStream == null)
                                     {
-                                        Console.WriteLine($" - {res}");
+                                        Console.WriteLine($"Resource not found: {resourceName}");
+                                        Console.WriteLine("Available resources:");
+                                        foreach (var res in assembly.GetManifestResourceNames())
+                                        {
+                                            Console.WriteLine($" - {res}");
+                                        }
+                                        return;
                                     }
-                                    return;
+                                    resourceStream.CopyTo(fileStream);
                                 }
-                                resourceStream.CopyTo(fileStream);
+                            }
+                            catch (Exception ex)
+                            {
+                                Console.WriteLine($"Error extracting resource: {ex.Message}");
+                                return;
+                            }
+
+                            var processInfo = new ProcessStartInfo
+                            {
+                                FileName = tempPath,
+                                Arguments = yourSubnetNoZero,
+                                RedirectStandardOutput = true,
+                                UseShellExecute = false,
+                                CreateNoWindow = true
+                            };
+
+                            using (var process = new Process { StartInfo = processInfo })
+                            {
+                                process.Start();
+
+                                string output = await process.StandardOutput.ReadToEndAsync();
+                                process.WaitForExit();
+
+                                foundIps = output
+                                    .Split(new[] { '\n', '\r' }, StringSplitOptions.RemoveEmptyEntries)
+                                    .Where(line => line.Contains('.'))
+                                    .ToList();
                             }
                         }
                         catch (Exception ex)
                         {
-                            Console.WriteLine($"Error extracting resource: {ex.Message}");
-                            return;
+                            Console.WriteLine($"Error running scanner: {ex.Message}");
+                            MainThread.BeginInvokeOnMainThread(() =>
+                            {
+                                DisplayAlert("ciao", ex.Message as string, "Ok");
+                            });
                         }
 
-                        var processInfo = new ProcessStartInfo
+                        MainThread.BeginInvokeOnMainThread(() =>
                         {
-                            FileName = tempPath,
-                            Arguments = yourSubnetNoZero,
-                            RedirectStandardOutput = true,
-                            UseShellExecute = false,
-                            CreateNoWindow = true
-                        };
+                            LoadingOverlay.IsVisible = false;
 
-                        using (var process = new Process { StartInfo = processInfo })
+                            var popup = new DevicePopup(foundIps);
+                            if (Application.Current != null)
+                            {
+                                Window? window = Application.Current.Windows.Count > 0 ? Application.Current.Windows[0] : null;
+                                if (window != null && window.Page != null)
+                                {
+                                    window.Page.Navigation.PushModalAsync(popup);
+                                }
+                            }
+                        });
+                    });
+                }
+                if (DeviceInfo.Platform == DevicePlatform.Android)
+                {
+                    try
+                    {
+                        var cts = new CancellationTokenSource();
+                        cts.CancelAfter(TimeSpan.FromSeconds(30));
+
+                        await Task.Run(async () =>
                         {
-                            process.Start();
+                            MainThread.BeginInvokeOnMainThread(() => LoadingOverlay.IsVisible = true);
+                            string subnet = yourSubnetNoZero;
 
-                            string output = await process.StandardOutput.ReadToEndAsync();
-                            process.WaitForExit();
+                            var foundIps = new ConcurrentBag<string>();
 
-                            foundIps = output
-                                .Split(new[] { '\n', '\r' }, StringSplitOptions.RemoveEmptyEntries)
-                                .Where(line => line.Contains('.'))
-                                .ToList();
-                        }
+                            int batchSize = 20;
+                            var ipRanges = Enumerable.Range(1, 254)
+                                .Select(i => $"{subnet}.{i}")
+                                .Chunk(batchSize);
+
+                            foreach (var ipBatch in ipRanges)
+                            {
+                                var scanTasks = ipBatch.Select(ip => ScanSingleIpAsync(ip, 5000, cts.Token));
+                                var results = await Task.WhenAll(scanTasks);
+
+                                foreach (var ip in results.Where(ip => !string.IsNullOrEmpty(ip)))
+                                {
+                                    foundIps.Add(ip);
+                                }
+                            }
+
+                            MainThread.BeginInvokeOnMainThread(() =>
+                            {
+                                LoadingOverlay.IsVisible = false;
+                                var popup = new DevicePopup(foundIps.ToList());
+                                Application.Current?.MainPage?.Navigation.PushModalAsync(popup);
+                            });
+                        }, cts.Token);
                     }
                     catch (Exception ex)
                     {
-                        Console.WriteLine($"Error running scanner: {ex.Message}");
                         MainThread.BeginInvokeOnMainThread(() =>
                         {
-                            DisplayAlert("ciao", ex.Message as string, "Ok");
+                            LoadingOverlay.IsVisible = false;
+                            DisplayAlert("Error", ex.Message, "OK");
                         });
                     }
-
-                    MainThread.BeginInvokeOnMainThread(() =>
-                    {
-                        LoadingOverlay.IsVisible = false;
-
-                        var popup = new DevicePopup(foundIps);
-                        if (Application.Current != null)
-                        {
-                            Window? window = Application.Current.Windows.Count > 0 ? Application.Current.Windows[0] : null;
-                            if (window != null && window.Page != null)
-                            {
-                                window.Page.Navigation.PushModalAsync(popup);
-                            }
-                        }
-                    });
-                });
+                }
             }
             else
             {

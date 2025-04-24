@@ -10,7 +10,7 @@
 		<ImplicitUsings>enable</ImplicitUsings>
 		<Nullable>enable</Nullable>
 		<AndroidEnableNETExperimental>false</AndroidEnableNETExperimental>
-		<WindowsPackageType>None</WindowsPackageType>
+		<!-- <WindowsPackageType>None</WindowsPackageType> -->
 		<ApplicationTitle>mauiapp1</ApplicationTitle>
 		<ApplicationId>com.NAO.NAO</ApplicationId>
 		<ApplicationDisplayVersion>1.0</ApplicationDisplayVersion>
@@ -234,5 +234,13 @@
 </ItemGroup>
 <ItemGroup>
     <EmbeddedResource Include="cportscanner\windows\portscanner.exe" />
+</ItemGroup>
+<ItemGroup>
+  <AndroidNativeLibrary Include="Platforms\Android\jniLibs\**\*.so" />
+</ItemGroup>
+<ItemGroup>
+  <MauiFont Include="FontAwesome.otf">
+    <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+  </MauiFont>
 </ItemGroup>
 </Project>

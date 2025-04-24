@@ -10,15 +10,43 @@
     <TabBar>
         <ShellContent
             Title="Home"
-            ContentTemplate="{DataTemplate local:Home}" />
-        <ShellContent
+            ContentTemplate="{DataTemplate local:Home}">
+            <ShellContent.Icon>
+                <FontImageSource
+                    Glyph="&#xf015;"
+                    FontFamily="FontAwesome"
+                    Size="24"/>
+            </ShellContent.Icon>
+        </ShellContent>
+        <ShellContent 
             Title="Camera"
-            ContentTemplate="{DataTemplate local:MainPage}" />
+            ContentTemplate="{DataTemplate local:MainPage}">
+            <ShellContent.Icon>
+                <FontImageSource 
+                Glyph="&#xf030;" 
+                FontFamily="FontAwesome" 
+                Size="24" />
+            </ShellContent.Icon>
+        </ShellContent>
         <ShellContent
             Title="Preferences"
-            ContentTemplate="{DataTemplate local:Preferences}" />
+            ContentTemplate="{DataTemplate local:Preferences}">
+            <ShellContent.Icon>
+                <FontImageSource
+                Glyph="&#xf013;"
+                FontFamily="FontAwesome"
+                Size="24" />
+            </ShellContent.Icon>
+        </ShellContent>
         <ShellContent
             Title="Recents"
-            ContentTemplate="{DataTemplate local:Recents}" />
+            ContentTemplate="{DataTemplate local:Recents}">
+            <ShellContent.Icon>
+                <FontImageSource
+                    Glyph="&#xf1da;"
+                    FontFamily="FontAwesome"
+                    Size="24" />
+            </ShellContent.Icon>
+        </ShellContent>
     </TabBar>
 </Shell>
