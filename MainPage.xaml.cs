@@ -168,24 +168,42 @@ namespace mauiapp1
 
         private string? MakeReadable(string captioncontent)
         {
-            using JsonDocument jsonDocument = JsonDocument.Parse(captioncontent);
-            
-            if (jsonDocument.RootElement.TryGetProperty("<CAPTION>", out JsonElement captionElement))
+            try
             {
-                if (captionElement.ValueKind == JsonValueKind.String)
+                using JsonDocument jsonDocument = JsonDocument.Parse(captioncontent);
+
+                if (jsonDocument.RootElement.TryGetProperty("<CAPTION>", out JsonElement captionElement))
                 {
-                    return captionElement.GetString();
-                }
-                else if (captionElement.ValueKind == JsonValueKind.Object)
-                {
-                    if (captionElement.TryGetProperty("text", out JsonElement textElement))
+                    if (captionElement.ValueKind == JsonValueKind.String)
                     {
-                        return textElement.GetString();
+                        return captionElement.GetString();
                     }
+                    else if (captionElement.ValueKind == JsonValueKind.Object)
+                    {
+                        if (captionElement.TryGetProperty("text", out JsonElement textElement) &&
+                            textElement.ValueKind == JsonValueKind.String)
+                        {
+                            return textElement.GetString();
+                        }
+                    }
+                    Console.WriteLine($"Unexpected caption element type: {captionElement.ValueKind}");
                 }
+                else
+                {
+                    Console.WriteLine("No <CAPTION> property found in the JSON");
+                }
+            }
+            catch (JsonException ex)
+            {
+                Console.WriteLine($"JSON parsing error: {ex.Message}");
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Error in MakeReadable: {ex.Message}");
             }
             return null;
         }
+
         private async void DeleteCaption(string captionURL)
         {
             using (HttpClient client = new HttpClient())
@@ -235,7 +253,7 @@ namespace mauiapp1
                 {
                     //questo è un modo assolutamente poco carino di fare quello che voglio fare, ma se funziona funziona. se qualcuno ha idee migliori, ditemi.
                     int attempts = 0;
-                    int maximumAttempts = 30;
+                    int maximumAttempts = 90;
                     int delay = 5000; //ritardo tra un tentativo di connessione e l'altro, in millisecondi
                     while (attempts < maximumAttempts)
                     {

@@ -22,6 +22,7 @@ namespace mauiapp1
             deviceselector.Text = mauiapp1.Properties.Resources1.DeviceSelector;
             cancelbutton.Text = mauiapp1.Properties.Resources1.Cancel;
         }
+
         private async void DeviceCollectionView_SelectionChanged(object sender, SelectionChangedEventArgs e)
         { 
             if (DeviceCollectionView.SelectedItem != null)
@@ -30,6 +31,7 @@ namespace mauiapp1
                 Preferences.AppPreferences.ipaddr = selectedDevice;
                 await Navigation.PopModalAsync();
             }
+            DeviceCollectionView.SelectedItem = null;
         }
 
         private async void CancelButton_Clicked(object sender, EventArgs e)

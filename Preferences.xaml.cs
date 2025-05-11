@@ -12,6 +12,52 @@ namespace mauiapp1;
 
 public partial class Preferences : ContentPage
 {
+    public class PortScanner
+    {
+        private SemaphoreSlim _semaphore = new SemaphoreSlim(150); //numero di connessioni contemporanee. stai attento.
+        private List<string> _foundIPs = new List<string>();
+        public async Task ScanPort(string ip, int port, ContentPage page)
+        {
+            await _semaphore.WaitAsync();
+            try
+            {
+                using TcpClient client = new TcpClient();
+                try
+                {
+                    await client.ConnectAsync(ip, port);
+                    _foundIPs.Add(ip);
+                    await MainThread.InvokeOnMainThreadAsync(() =>
+                    {
+                        // Display alert for found device
+                        page.DisplayAlert("Found", $"Device {ip} has port {port} open.", "OK");
+                    });
+                }
+                catch
+                {
+
+                    //così il codice va avanti e non si blocca quando ha trovato un errore. qualcuno mi dica che non si fa così, vi prego.
+                }
+            }
+            finally
+            {
+                _semaphore.Release();
+            }
+        }
+
+        public List<string> RetrieveFoundIPs() => _foundIPs; //ma "retreive" o "retrieve" come si scrive?
+
+        public async Task ScanNetwork(string subnet, ContentPage page)
+        {
+            List<Task> scanTasks = new List<Task>();
+
+            for (int i = 1; i < 255; i++)
+            {
+                string ip = $"{subnet}.{i}";
+                scanTasks.Add(ScanPort(ip, 5000, page));
+            }
+            await Task.WhenAll(scanTasks); //carino lui. aspetta che tutto abbia finito... 
+        }
+    }
     string? ipaddr;
     public Preferences()
     {
@@ -263,39 +309,37 @@ public partial class Preferences : ContentPage
                 {
                     try
                     {
-                        var cts = new CancellationTokenSource();
-                        cts.CancelAfter(TimeSpan.FromSeconds(30));
-
-                        await Task.Run(async () =>
+                        PortScanner portScanner = new PortScanner();
+                        string? yourIPAndroid = GetCurrentIP();
+                        if (yourIPAndroid != null)
                         {
-                            MainThread.BeginInvokeOnMainThread(() => LoadingOverlay.IsVisible = true);
-                            string subnet = yourSubnetNoZero;
-
-                            var foundIps = new ConcurrentBag<string>();
-
-                            int batchSize = 20;
-                            var ipRanges = Enumerable.Range(1, 254)
-                                .Select(i => $"{subnet}.{i}")
-                                .Chunk(batchSize);
-
-                            foreach (var ipBatch in ipRanges)
+                            string? subnetMaskAndroid = GetSubnetMask(yourIPAndroid);
+                            string yourSubnetnozero = GetSubnetWithoutZero(subnetMaskAndroid);
+                            if (subnetMask != null)
                             {
-                                var scanTasks = ipBatch.Select(ip => ScanSingleIpAsync(ip, 5000, cts.Token));
-                                var results = await Task.WhenAll(scanTasks);
-
-                                foreach (var ip in results.Where(ip => !string.IsNullOrEmpty(ip)))
+                                await Task.Run(async () =>
                                 {
-                                    foundIps.Add(ip);
-                                }
-                            }
+                                    MainThread.BeginInvokeOnMainThread(() =>
+                                    {
+                                        LoadingOverlay.IsVisible = true;
+                                    });
 
-                            MainThread.BeginInvokeOnMainThread(() =>
+                                    await portScanner.ScanNetwork(yourSubnetnozero, this);
+
+                                    MainThread.BeginInvokeOnMainThread(() =>
+                                    {
+                                        LoadingOverlay.IsVisible = false;
+                                    });
+                                    List<string> foundIps = portScanner.RetrieveFoundIPs();
+                                    var popup = new DevicePopup(foundIps);
+                                    await Navigation.PushModalAsync(popup);
+                                });
+                            }
+                            else
                             {
-                                LoadingOverlay.IsVisible = false;
-                                var popup = new DevicePopup(foundIps.ToList());
-                                Application.Current?.MainPage?.Navigation.PushModalAsync(popup);
-                            });
-                        }, cts.Token);
+                                await DisplayAlert("Error", "You're Offline.", "OK.");
+                            }
+                        }
                     }
                     catch (Exception ex)
                     {
