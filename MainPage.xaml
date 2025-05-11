@@ -21,7 +21,7 @@
         <Grid x:Name="LoadingOverlay"
               BackgroundColor="#80000000"
               IsVisible="False"
-              Grid.RowSpan="4"
+              Grid.Row="0" Grid.RowSpan="4"
               VerticalOptions="FillAndExpand"
               HorizontalOptions="FillAndExpand">
             <StackLayout VerticalOptions="Center" HorizontalOptions="Center">

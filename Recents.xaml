@@ -6,8 +6,8 @@
         <ListView x:Name="recentItemsListView" Margin="16,16,16,16">
             <ListView.ItemTemplate>
                 <DataTemplate>
-                    <TextCell Text="{Binding analysedcaption}" 
-                              Detail="{Binding scandate, StringFormat='{}{0:yyyy-MM-dd HH:mm:ss}'}" />
+                    <TextCell Text="{Binding Analysedcaption}" 
+                              Detail="{Binding Scandate, StringFormat='{}{0:yyyy-MM-dd HH:mm:ss}'}" />
                 </DataTemplate>
             </ListView.ItemTemplate>
         </ListView>

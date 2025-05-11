@@ -1,15 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Runtime.InteropServices;
+﻿using System.Runtime.InteropServices;
 using System.Text;
-using System.Threading.Tasks;
+namespace mauiapp1;
 
-namespace mauiapp1
+internal static class PortScanNative
 {
-    internal static class PortScanNative
-    {
-        [DllImport("portscanner", EntryPoint = "scan_port_range")]
-        internal static extern int ScanPortRange(string subnetPrefix, StringBuilder outputBuffer, int maxOutputLen);
-    }
+    [DllImport("portscanner", EntryPoint = "scan_port_range", CharSet = CharSet.Unicode)]
+    internal static extern int ScanPortRange(string subnetPrefix, StringBuilder outputBuffer, int maxOutputLen);
 }

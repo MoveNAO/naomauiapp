@@ -7,8 +7,8 @@ namespace mauiapp1
 {
     public class ScannedObject
     {
-        public DateTimeOffset scandate { get; set; }
-        public string? analysedcaption { get; set; }
+        public DateTimeOffset Scandate { get; set; }
+        public string? Analysedcaption { get; set; }
     }
     public partial class MainPage : ContentPage
     {
@@ -352,8 +352,8 @@ namespace mauiapp1
             DateTime thisDay = DateTime.Today;
             var scannedObject = new ScannedObject
             {
-                scandate = thisDay,
-                analysedcaption = caption
+                Scandate = thisDay,
+                Analysedcaption = caption
             };
             string tempPath = System.IO.Path.GetTempPath();
             string filename = tempPath + "\\scannedobjects.json";

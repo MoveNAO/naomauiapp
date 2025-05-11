@@ -13,17 +13,16 @@
         <VerticalStackLayout Grid.Row="0" Margin="16">
             <Label x:Name="insertIP"/>
             <Entry
-                x:Name="entry"
                 Placeholder="IP Address"
                 TextChanged="Entry_TextChanged"/>
             <Button
                 x:Name="setButton"
                 Clicked="Button_Clicked"/>
         </VerticalStackLayout>
-        <Grid x:Name="LoadingOverlay" IsVisible="false"
-          BackgroundColor="#80000000"
-          AbsoluteLayout.LayoutBounds="0,0,1,1"
-          AbsoluteLayout.LayoutFlags="All">
+        <Grid Grid.Row="0" x:Name="LoadingOverlay" IsVisible="false"
+              BackgroundColor="#80000000"
+              AbsoluteLayout.LayoutBounds="0,0,1,1"
+              AbsoluteLayout.LayoutFlags="All">
             <StackLayout VerticalOptions="Center" HorizontalOptions="Center">
                 <ActivityIndicator IsRunning="True" Color="White" />
                 <Label Text="Loading..." TextColor="White" Margin="0,10,0,0" />

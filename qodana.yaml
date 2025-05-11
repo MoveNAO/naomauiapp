@@ -1,0 +1,61 @@
+#-------------------------------------------------------------------------------#
+#               Qodana analysis is configured by qodana.yaml file               #
+#             https://www.jetbrains.com/help/qodana/qodana-yaml.html            #
+#-------------------------------------------------------------------------------#
+version: "1.0"
+#Specify IDE code to run analysis without container (Applied in CI/CD pipeline)
+ide: QDNET
+#Specify inspection profile for code analysis
+profile:
+  name: qodana.starter
+include:
+  - name: ConvertIfStatementToConditionalTernaryExpression
+  - name: ArrangeThisQualifier
+  - name: AsyncVoidMethod
+  - name: ClassNeverInstantiated.Global
+  - name: ArrangeObjectCreationWhenTypeEvident
+  - name: ArrangeNamespaceBody
+  - name: SuggestVarOrType_SimpleTypes
+  - name: SuggestVarOrType_BuiltInTypes
+  - name: SuggestVarOrType_Elsewhere
+  - name: ArrangeTypeMemberModifiers
+  - name: UseCollectionExpression
+  - name: UnusedMember.Global
+  - name: UnusedType.Global
+  - name: CA1865
+  - name: CA1866
+  - name: CA2101
+  - name: CA1822
+  - name: CA1869
+  - name: CA1860
+  - name: CA1861
+  - name: OverriddenWithSameValue
+  - name: ReplaceSubstringWithRangeIndexer
+  - name: RedundantTypeDeclarationBody
+  - name: CppRedundantElseKeyword
+  - name: RedundantIfElseBlock
+  - name: MethodSupportsCancellation
+  - name: MethodHasAsyncOverload
+  - name: MergeIntoPattern
+  - name: MemberCanBeMadeStatic.Local
+  - name: MemberCanBeMadeStatic.Global
+  - name: MemberCanBePrivate.Global
+  - name: LossyEncoding
+  - name: LoopCanBeConvertedToQuery
+  - name: TooWideLocalVariableScope
+  - name: InvertIf
+  - name: FieldCanBeMadeReadOnly.Local
+  - name: CheckTagEmptyBody
+  - name: ConvertToConstant.Local
+  - name: ConvertToUsingDeclaration
+  - name: UseAwaitUsing
+  - name: ConvertToPrimaryConstructor
+  - name: ConvertIfStatementToSwitchStatement
+  - name: UsePatternMatching
+  - name: JsonSchemaCompliance
+exclude:
+  - name: All
+    paths:
+      - cportscanner/android/native/port_scanner.c
+      - cportscanner/android/native/jni
+      - cportscanner/windows
