@@ -243,6 +243,7 @@ namespace mauiapp1
                 return false;
             }
             byte tempForParsing;
+
             return splitValues.All(r => byte.TryParse(r, out tempForParsing));
         }
         private async void DownloadCaption(string downloadURL)
